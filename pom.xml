@@ -10,6 +10,7 @@
     <modules>
         <module>huangniuniu-registry</module>
         <module>huangniuniu-gateway</module>
+        <module>huangniuniu-upload</module>
     </modules>
     <packaging>pom</packaging>
 
