@@ -1,0 +1,34 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: huangniuniu-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5  #每个5秒拉取一次服务列表
+zuul:
+  prefix: /api  # 添加路由前缀
+  routes:
+    movie-service: /item/**   #路由到电影微服务
+    cinema-service: /search/**  #路由到电影院微服务
+    user-service: /user/**  #路由到用户微服务
+    auth-service: /auth/** # 授权中心微服务
+    city-service: /cart/** #路由到地点微服务
+    order-service: /order/** #路由到订单微服务
+  add-host-header: true  # 携带头信息，把域名带上
+  sensitive-headers: # 覆盖默认敏感头信息
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 # 熔断器的超时时长：5000ms
+ribbon:
+  ConnectionTimeout: 3000  # ribbon的连接时长：1000ms
+  ReadTimeout: 35000  # ribbon的读取时长：3500ms
+  MaxAutoRetries: 0  # 当前服务重试次数
+  MaxAutoRetriesNextServer: 0  # 切换服务重试次数
