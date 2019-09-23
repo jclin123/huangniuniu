@@ -1,0 +1,18 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: sms-service
+  rabbitmq:
+    host: 47.102.97.195
+    virtual-host: /huangniuniu
+    username: huangniuniu
+    password: huangniuniu
+
+#短信验证码的信息
+huangniuniu:
+  sms:
+    uid: jc123  #本站用户名
+    key: d41d8cd98f00b204e980  #接口安全秘钥
+    preCode: 您的验证码是
+    afterCode: ;有效期为5分钟。如非本人操作，请忽略此短信。

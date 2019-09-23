@@ -11,6 +11,8 @@
         <module>huangniuniu-registry</module>
         <module>huangniuniu-gateway</module>
         <module>huangniuniu-upload</module>
+        <module>huangniuniu-sms</module>
+        <module>huangniuniu-common</module>
     </modules>
     <packaging>pom</packaging>
 
