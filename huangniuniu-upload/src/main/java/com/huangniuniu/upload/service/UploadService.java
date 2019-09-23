@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -19,8 +17,7 @@ import java.util.List;
 public class UploadService {
 
     //设置白名单
-    private static final List<String> CONTENT_TYPES = Arrays.asList("image/png", "image/gif","image/jpg",
-            "video/mp4"+"video/mpeg","video/mpeg");
+    private static final List<String> CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg","image/gif","image/jpg","video/mp4");
 
     //日志
     private static final Logger  LOGGER = LoggerFactory.getLogger(UploadService.class);
@@ -41,9 +38,13 @@ public class UploadService {
 
         try {
             //校验文件内容
-            BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+            /*BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
             if(bufferedImage == null){
                 LOGGER.info("文件内容不合法：{}",originalFilename);
+                return null;
+            }*/
+            if(file.getSize() == 0 || file.isEmpty()){
+                LOGGER.info("文件内容为空：{}",originalFilename);
                 return null;
             }
             //获取后缀名
