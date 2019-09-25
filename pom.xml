@@ -13,6 +13,7 @@
         <module>huangniuniu-upload</module>
         <module>huangniuniu-sms</module>
         <module>huangniuniu-common</module>
+        <module>huangniuniu-user</module>
         <module>huangniuniu-movie</module>
     </modules>
     <packaging>pom</packaging>
