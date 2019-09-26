@@ -1,0 +1,20 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: movie-service
+  datasource:
+    url: jdbc:mysql://rm-wz9nd973maez52c107o.mysql.rds.aliyuncs.com:3306/huangniuniu
+    username: jc
+    password: jc123456AA
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5  # 5秒钟发送一次心跳
+    lease-expiration-duration-in-seconds: 15  # 10秒不发送就过期
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
