@@ -17,8 +17,10 @@ public class Skedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String roomName;
     private Float price;
+    //@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm")
     private Date showDate;
     private Integer ticketsLeft;
     private Integer ticketsSold;

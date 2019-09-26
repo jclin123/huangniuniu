@@ -3,10 +3,7 @@ package com.huangniuniu.cinema.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,4 +15,8 @@ public class Cinema_movie {
     private Long id;
     private Long cinemaid;
     private Long movieid;
+    @Transient
+    private String cinemaName;
+    @Transient
+    private String movieName;
 }

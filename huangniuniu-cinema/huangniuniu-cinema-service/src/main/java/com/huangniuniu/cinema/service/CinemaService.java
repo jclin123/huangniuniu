@@ -45,12 +45,6 @@ public interface CinemaService {
      */
     List<Cinema> getCinemaByCondition(Cinema cinema);
 
-    /**
-     * 根据电影院id查询该电影院的上映电影
-     * @param cid
-     * @return
-     */
-//    List<Movie> getMoviesByCinemaId(Long cid);
 
     /**
      * 根据城市id，分显示电影院列表
