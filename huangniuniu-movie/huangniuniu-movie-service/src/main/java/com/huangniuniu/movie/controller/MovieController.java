@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,13 +35,13 @@ public class MovieController {
      * @param mid
      * @return
      */
-    @GetMapping("getById/{mid}")
-    public ResponseEntity<Movie> getMovieByMovieid(@PathVariable("mid") Integer mid){
-        Movie movieByMovieid = this.movieService.getMovieByMovieid(mid);
-        if(StringUtils.isEmpty(movieByMovieid)){
+    @GetMapping("{mid}")
+        public ResponseEntity<Movie> getMovieByMovieid(@PathVariable("mid") Long mid){
+        Movie movie = this.movieService.getMovieByMovieid(mid);
+        if(movie == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(movieByMovieid);
+        return ResponseEntity.ok(movie);
     }
 
     @PostMapping("insert")
@@ -77,11 +75,6 @@ public class MovieController {
         return ResponseEntity.ok(movieByCityid);
 
     }
-
-
-
-
-
 
 
 

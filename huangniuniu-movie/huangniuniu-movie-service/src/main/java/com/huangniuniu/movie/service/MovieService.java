@@ -2,7 +2,6 @@ package com.huangniuniu.movie.service;
 
 import com.huangniuniu.movie.mapper.MovieMapper;
 import com.huangniuniu.movie.pojo.Movie;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class MovieService {
         return this.movieMapper.selectByExample(example);
     }
 
-    public Movie getMovieByMovieid(Integer mid){
+    public Movie getMovieByMovieid(Long mid){
         return this.movieMapper.selectByPrimaryKey(mid);
     }
     public void insertMovie(Movie movie){
