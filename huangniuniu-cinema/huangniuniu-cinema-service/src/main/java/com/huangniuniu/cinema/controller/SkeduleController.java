@@ -1,5 +1,6 @@
 package com.huangniuniu.cinema.controller;
 
+import com.huangniuniu.cinema.pojo.CinemaDetail;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.cinema.service.SkeduleService;
@@ -10,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("skedule")
@@ -91,6 +93,29 @@ public class SkeduleController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("cinemaDetail/{cid}")
+    public ResponseEntity<CinemaDetail> getCinemaDetailBycinemaId(@PathVariable("cid")Long cid){
+        CinemaDetail detail = skeduleService.getCinemaDetailBycinemaId(cid);
+        if(detail == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(detail);
+    }
+
+    /**
+     * 当页面加载后发出，根据电影院id查询出该电影院信息以及该电影院的电影信息
+     * @param cinemaid
+     * @return
+     */
+    @GetMapping("cinemaMovieListBycid/{cinemaid}")
+    public ResponseEntity<Map<String,Object>> selectCinemaAndMovieListByCinemaId(@PathVariable("cinemaid")Long cinemaid){
+        Map<String, Object> map = skeduleService.selectCinemaAndMovieListByCinemaId(cinemaid);
+        if(CollectionUtils.isEmpty(map)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(map);
     }
 
 }

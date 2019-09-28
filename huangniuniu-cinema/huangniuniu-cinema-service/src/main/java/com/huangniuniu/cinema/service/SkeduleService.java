@@ -1,9 +1,11 @@
 package com.huangniuniu.cinema.service;
 
+import com.huangniuniu.cinema.pojo.CinemaDetail;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SkeduleService {
     /**
@@ -55,4 +57,18 @@ public interface SkeduleService {
      * @return
      */
     List<Skedule> getSkeduleByCondition(Skedule skedule);
+
+    /**
+     * 根据电影院id查询电影院详情（包括电影院信息、电影院的电影信息，以及电影对应的排场信息）
+     * @param cinemaid
+     * @return
+     */
+    CinemaDetail getCinemaDetailBycinemaId(Long cinemaid);
+
+    /**
+     * 当页面加载后发出，根据电影院id查询出该电影院信息以及该电影院的电影信息
+     * @param cinemaid
+     * @return
+     */
+    Map<String,Object> selectCinemaAndMovieListByCinemaId(Long cinemaid);
 }

@@ -75,4 +75,11 @@ public class CinemaMovieServiceImpl implements CinemaMovieService {
 
         return cinema_movie2;
     }
+
+    @Override
+    public List<Cinema> selectCinemaByCityIdAndMovieId(Long cityid, Long movieid) {
+
+        List<Cinema> cinemaList = cinemaMovieMapper.selectCinemaByCityIdAndMovieId(cityid, movieid);
+        return cinemaList;
+    }
 }

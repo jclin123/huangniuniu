@@ -1,7 +1,9 @@
 package com.huangniuniu.cinema.service;
 
+import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CinemaMovieService {
@@ -35,5 +37,12 @@ public interface CinemaMovieService {
      */
     Cinema_movie selectCinemaMovieBycmid(Long id);
 
+    /**
+     * 根据城市id和电影id查询该城市下有这个电影的电影院
+     * @param cityid
+     * @param movieid
+     * @return
+     */
+    List<Cinema> selectCinemaByCityIdAndMovieId(Long cityid, Long movieid);
 
 }

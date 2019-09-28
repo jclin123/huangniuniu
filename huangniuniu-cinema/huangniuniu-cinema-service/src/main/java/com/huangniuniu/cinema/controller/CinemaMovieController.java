@@ -1,5 +1,6 @@
 package com.huangniuniu.cinema.controller;
 
+import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.service.CinemaMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -68,5 +70,20 @@ public class CinemaMovieController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(cinema_movie);
+    }
+    /**
+     * 根据城市id和电影id查询该城市下有这个电影的电影院
+     * @param cityId
+     * @param mid
+     * @return
+     */
+    @GetMapping("{cityId}/{mid}")
+    public ResponseEntity<List<Cinema>> selectCinemaByCityIdAndMovieId(@PathVariable("cityId")Long cityId,
+                                                                       @PathVariable("mid")Long mid){
+        List<Cinema> cinemaList = cinemaMovieService.selectCinemaByCityIdAndMovieId(cityId, mid);
+        if(CollectionUtils.isEmpty(cinemaList)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cinemaList);
     }
 }
