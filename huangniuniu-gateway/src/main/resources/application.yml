@@ -17,6 +17,7 @@ zuul:
     auth-service: /auth/** # 授权中心微服务
     city-service: /city/** #路由到地点微服务
     order-service: /order/** #路由到订单微服务
+    comment-service: /comment/** #路由到评论微服务
   add-host-header: true  # 携带头信息，把域名带上
   sensitive-headers: # 覆盖默认敏感头信息
 

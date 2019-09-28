@@ -16,6 +16,7 @@
         <module>huangniuniu-user</module>
         <module>huangniuniu-cinema</module>
         <module>huangniuniu-movie</module>
+        <module>huangniuniu-city</module>
     </modules>
     <packaging>pom</packaging>
 
