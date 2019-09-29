@@ -44,4 +44,12 @@ public class PageResult<T> {
     public void setItems(List<T> items) {
         this.items = items;
     }
+
+    public PageReult() {
+    }
+
+    public PageReult(Long total, List<T> items) {
+        this.total = total;
+        this.items = items;
+    }
 }

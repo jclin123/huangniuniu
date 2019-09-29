@@ -1,14 +1,11 @@
 package com.huangniuniu.movie.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.mapper.MovieMapper;
 import com.huangniuniu.movie.pojo.Movie;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -60,9 +57,11 @@ public class MovieService {
      * @param mid
      * @return
      */
-    public Movie getMovieByMovieid(Integer mid){
+
+    public Movie getMovieByMovieid(Long mid){
         return this.movieMapper.selectByPrimaryKey(mid);
     }
+
 
     /**
      * 新增电影
