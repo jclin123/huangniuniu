@@ -183,6 +183,11 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    @Override
+    public User getUserByUserId(Long id) {
+        return  userMapper.selectByPrimaryKey(id);
+    }
+
     private void updateIsDisable(Long id,Integer isd){
         User user = new User();
         user.setId(id);

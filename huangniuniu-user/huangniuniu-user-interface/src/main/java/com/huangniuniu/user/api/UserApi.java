@@ -2,6 +2,7 @@ package com.huangniuniu.user.api;
 
 import com.huangniuniu.user.pojo.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface UserApi {
@@ -25,4 +26,12 @@ public interface UserApi {
     @GetMapping("phonenumberCode")
     public User loginByPhoneAndCode(@RequestParam("phonenumber")String phonenumber,
                                     @RequestParam("code")String code);
+
+    /**
+     * 根据用户id查询用户信息
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public User getUserByUserId(@PathVariable("id")Long id);
 }
