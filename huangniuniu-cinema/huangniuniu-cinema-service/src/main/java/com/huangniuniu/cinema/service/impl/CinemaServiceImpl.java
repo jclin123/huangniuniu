@@ -5,7 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.huangniuniu.cinema.mapper.CinemaMapper;
 import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.service.CinemaService;
-import com.huangniuniu.common.pojo.PageReult;
+import com.huangniuniu.common.pojo.PageResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class CinemaServiceImpl implements CinemaService {
     }
 
     @Override
-    public PageReult<Cinema> getAllCinemasByPage(Integer pageNumber, Integer rows, Long cid) {
+    public PageResult<Cinema> getAllCinemasByPage(Integer pageNumber, Integer rows, Long cid) {
 
         //条件查询
         Example example = new Example(Cinema.class);
@@ -81,6 +81,6 @@ public class CinemaServiceImpl implements CinemaService {
         Long total = pageInfo.getTotal();//获得总条数
         List<Cinema> cinemaList = pageInfo.getList();//获得分页记录
 
-        return new PageReult<>(total,cinemaList);
+        return new PageResult<>(total,cinemaList);
     }
 }

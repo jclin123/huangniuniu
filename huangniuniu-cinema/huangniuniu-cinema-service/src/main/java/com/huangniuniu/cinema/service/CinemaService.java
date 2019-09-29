@@ -1,7 +1,7 @@
 package com.huangniuniu.cinema.service;
 
 import com.huangniuniu.cinema.pojo.Cinema;
-import com.huangniuniu.common.pojo.PageReult;
+import com.huangniuniu.common.pojo.PageResult;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public interface CinemaService {
      * @param cid
      * @return
      */
-    PageReult<Cinema> getAllCinemasByPage(Integer pageNumber, Integer rows, Long cid);
+    PageResult<Cinema> getAllCinemasByPage(Integer pageNumber, Integer rows, Long cid);
 
 
 }

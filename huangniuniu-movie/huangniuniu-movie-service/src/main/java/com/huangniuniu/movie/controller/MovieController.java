@@ -1,5 +1,6 @@
 package com.huangniuniu.movie.controller;
 
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class MovieController {
     private MovieService movieService;
 
     /**
-     * 查询电影信息
+     * 查询电影信息，已下架三个月不展出
      * @return
      */
     @GetMapping("list")
@@ -29,6 +30,22 @@ public class MovieController {
         return ResponseEntity.ok(allMovie);
 
     }
+
+    /**
+     * 分页查询电影信息，已下架三个月不展出
+     * @param page
+     * @param rows
+     * @return
+     */
+    @GetMapping("getAllMovieByPage")
+    public ResponseEntity<PageResult<Movie>> getAllMovieByPage(@RequestParam("page") Integer page,@RequestParam("rows") Integer rows){
+        PageResult<Movie> allMovieByPage = movieService.getAllMovieByPage(page, rows);
+        if(CollectionUtils.isEmpty(allMovieByPage.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(allMovieByPage);
+    }
+
 
     /**
      * 根据电影id查询电影
