@@ -1,11 +1,14 @@
 package com.huangniuniu.movie.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.mapper.MovieMapper;
 import com.huangniuniu.movie.pojo.Movie;
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -19,6 +22,10 @@ public class MovieService {
     @Autowired
     private MovieMapper movieMapper;
 
+    /**
+     * 获取电影列表，超过下架时间三个月不展出
+     * @return
+     */
     public List<Movie> getAllMovie(){
         Example example = new Example(Movie.class);
         Example.Criteria criteria = example.createCriteria();
@@ -31,13 +38,46 @@ public class MovieService {
         return this.movieMapper.selectByExample(example);
     }
 
+    /**
+     * 分页查询电影信息，已下架三个月不展出
+     * @param page
+     * @param rows
+     * @return
+     */
+    public PageResult<Movie> getAllMovieByPage(Integer page, Integer rows){
+        List<Movie> allMovie = this.getAllMovie();
+        List<Movie> movies = movieMapper.selectByExample(allMovie);
+        PageHelper.startPage(page, rows);
+        PageInfo<Movie> pageInfo=new PageInfo<>(movies);
+        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+
+    }
+
+
+
+    /**
+     * 根据电影id查询电影
+     * @param mid
+     * @return
+     */
     public Movie getMovieByMovieid(Integer mid){
         return this.movieMapper.selectByPrimaryKey(mid);
     }
+
+    /**
+     * 新增电影
+     * @param movie
+     */
+    @Transactional
     public void insertMovie(Movie movie){
        this.movieMapper.insertSelective(movie);
 
     }
+
+    /**
+     * 根据id删除电影
+     * @param id
+     */
     public void deleteMovie(Long id){
         this.movieMapper.deleteByPrimaryKey(id);
 
@@ -68,6 +108,15 @@ public class MovieService {
 
     }
 
+    /**
+     * 根据城市id查询电影
+     * ishot为true为热映
+     * ishot为false为即将上映
+     * 已下架不展出
+     * @param cid
+     * @param ishot
+     * @return
+     */
     public List<Movie> getMovieByCityid(Long cid,Boolean ishot){
             List<Movie> movieByCityids = movieMapper.getMovieByCityid(cid, ishot);
         List<Movie> movies=new ArrayList<Movie>();

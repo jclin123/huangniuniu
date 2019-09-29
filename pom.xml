@@ -15,6 +15,7 @@
         <module>huangniuniu-common</module>
         <module>huangniuniu-user</module>
         <module>huangniuniu-movie</module>
+        <module>huangniuniu-order</module>
     </modules>
     <packaging>pom</packaging>
 
