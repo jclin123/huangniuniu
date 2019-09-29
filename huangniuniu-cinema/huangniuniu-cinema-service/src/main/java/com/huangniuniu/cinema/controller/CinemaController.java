@@ -2,7 +2,7 @@ package com.huangniuniu.cinema.controller;
 
 import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.service.CinemaService;
-import com.huangniuniu.common.pojo.PageReult;
+import com.huangniuniu.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,10 +100,10 @@ public class CinemaController {
      * @return
      */
     @GetMapping("pagelist")
-    public ResponseEntity<PageReult<Cinema>> getAllCinemasByPage(@RequestParam(name = "pageNumber",defaultValue = "1")Integer pageNumber,
+    public ResponseEntity<PageResult<Cinema>> getAllCinemasByPage(@RequestParam(name = "pageNumber",defaultValue = "1")Integer pageNumber,
                                                                  @RequestParam(name = "rows",defaultValue = "6")Integer rows,
                                                                  @RequestParam("cityid")Long cityid){
-        PageReult<Cinema> list = cinemaService.getAllCinemasByPage(pageNumber, rows, cityid);
+        PageResult<Cinema> list = cinemaService.getAllCinemasByPage(pageNumber, rows, cityid);
         if(list == null || CollectionUtils.isEmpty(list.getItems())){
             return ResponseEntity.notFound().build();
         }

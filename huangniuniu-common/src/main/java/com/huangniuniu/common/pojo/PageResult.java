@@ -45,11 +45,5 @@ public class PageResult<T> {
         this.items = items;
     }
 
-    public PageReult() {
-    }
 
-    public PageReult(Long total, List<T> items) {
-        this.total = total;
-        this.items = items;
-    }
 }
