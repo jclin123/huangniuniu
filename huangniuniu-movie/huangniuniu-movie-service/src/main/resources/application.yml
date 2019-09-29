@@ -16,5 +16,7 @@ eureka:
     lease-renewal-interval-in-seconds: 5  # 5秒钟发送一次心跳
     lease-expiration-duration-in-seconds: 15  # 10秒不发送就过期
 mybatis:
+  type-aliases-package: com.huangniuniu.movie.pojo
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: true   #开启驼峰命名
+

@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("skedule")
@@ -92,5 +93,68 @@ public class SkeduleController {
         }
         return ResponseEntity.ok(list);
     }
+
+
+    /**
+     * 当页面加载后发出，根据电影院id查询出该电影院信息以及该电影院的电影信息
+     * @param cinemaid
+     * @return
+     */
+    @GetMapping("cinemaMovieList/{cinemaid}")
+    public ResponseEntity<Map<String,Object>> selectCinemaAndMovieListByCinemaId(@PathVariable("cinemaid")Long cinemaid){
+        Map<String, Object> map = skeduleService.selectCinemaAndMovieListByCinemaId(cinemaid);
+        if(CollectionUtils.isEmpty(map)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(map);
+    }
+
+    /**
+     * 根据电影院id和电影id查询排场（排场时间>当前时间的排场时间列表）
+     * @param cinemaid
+     * @param movieid
+     * @return
+     */
+    @GetMapping("skeduleTimeList/{cinemaid}/{movieid}")
+    public ResponseEntity<List<String>> selectSkeduleTimeListByCinemaIdAndMovieId(@PathVariable("cinemaid")Long cinemaid,
+                                                                                  @PathVariable("movieid")Long movieid){
+        List<String> list = skeduleService.selectSkeduleTimeListByCinemaIdAndMovieId(cinemaid, movieid);
+        if(CollectionUtils.isEmpty(list)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 根据选择的电影院、电影、以及该电影选择的时间(MM-dd)查询排场信息
+     * @param cinemaid
+     * @param movieid
+     * @param skeduletime
+     * @return
+     */
+    @GetMapping("skeduleList/{cinemaid}/{movieid}")
+    public ResponseEntity<List<Skedule>> selectSkeduleListByCinemaIdAndMovieIdAndSkeduleTime(@PathVariable("cinemaid")Long cinemaid,
+                                                                                             @PathVariable("movieid")Long movieid,
+                                                                                             @RequestParam("skeduletime")String skeduletime){
+        List<Skedule> skeduleList = skeduleService.selectSkeduleListByCinemaIdAndMovieIdAndSkeduleTime(cinemaid, movieid, skeduletime);
+        if(CollectionUtils.isEmpty(skeduleList)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(skeduleList);
+    }
+
+    /**
+     * 根据排场id和购买该排场的电影票数量，修改排场的电影票数量
+     * @param skeduleid
+     * @param number
+     * @return
+     */
+    @GetMapping("buyticket/{skeduleid}")
+    public ResponseEntity<Void> buyTicketBySkeduleId(@PathVariable("skeduleid")Long skeduleid,
+                                                     @RequestParam("number")Integer number){
+        skeduleService.buyTicketBySkeduleId(skeduleid,number);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

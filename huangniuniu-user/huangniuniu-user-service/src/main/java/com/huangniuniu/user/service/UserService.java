@@ -58,6 +58,10 @@ public interface UserService {
      */
     List<User> getUserByCondition(User user);
 
-
-
+    /**
+     * 根据用户id查询用户信息
+     * @param id
+     * @return
+     */
+    User getUserByUserId(Long id);
 }

@@ -16,8 +16,10 @@
         <module>huangniuniu-user</module>
         <module>huangniuniu-cinema</module>
         <module>huangniuniu-movie</module>
+        <module>huangniuniu-order</module>
         <module>huangniuniu-city</module>
         <module>huangniuniu-comment</module>
+        <module>huangniuniu-auth</module>
     </modules>
     <packaging>pom</packaging>
 
