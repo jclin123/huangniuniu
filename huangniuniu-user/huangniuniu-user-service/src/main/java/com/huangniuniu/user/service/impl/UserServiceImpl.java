@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -178,7 +179,6 @@ public class UserServiceImpl implements UserService {
             criteria.andLike("isDisable","%"+user.getIsDisable()+"%");
         }
         criteria.andEqualTo("roleType",1);//用户信息
-
         List<User> users = userMapper.selectByExample(example);
         return users;
     }
