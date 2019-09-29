@@ -20,8 +20,6 @@ public class Comment {
     private Data commentTime;
     private Long userid;
     private Long movieid;
-    @Transient
     private String movieName;
-    @Transient
     private String nickname;
 }

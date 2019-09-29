@@ -1,8 +1,6 @@
 package com.huangniuniu.service;
 
 import com.huangniuniu.comment.pojo.Comment;
-import com.huangniuniu.mapper.CommentMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -13,11 +11,6 @@ public interface CommentService {
      */
     List<Comment> getAllComment();
 
-    /**
-     * 根据电影ID查询评论，返回所有符合评论
-     * @return
-     */
-    List<Comment> getCommentByMovie(Long id);
 
     /**
      * 根据条件查询评论，返回所有符合评论

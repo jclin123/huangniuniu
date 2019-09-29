@@ -1,5 +1,6 @@
 package com.huangniuniu.service.impl;
 
+import com.huangniuniu.client.MovieClient;
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.mapper.CommentMapper;
 import com.huangniuniu.service.CommentService;
@@ -16,15 +17,13 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     public CommentMapper commentMapper;
 
+    @Autowired
+    public MovieClient movieClient;
+
     @Override
     public List<Comment> getAllComment() {
         List<Comment> comments = commentMapper.selectAll();
         return comments;
-    }
-
-    @Override
-    public List<Comment> getCommentByMovie(Long id) {
-        return null;
     }
 
     @Override
@@ -46,12 +45,20 @@ public class CommentServiceImpl implements CommentService {
         if(comment.getUserid()!=null){
             criteria.andEqualTo("userid",comment.getUserid());
         }
+        if(!StringUtils.isBlank(comment.getMovieName())){
+            criteria.andLike("movieName","%"+comment.getMovieName()+"%");
+        }
+        if(!StringUtils.isBlank(comment.getNickname())){
+            criteria.andLike("nickname","%"+comment.getNickname()+"%");
+        }
         List<Comment> comments = commentMapper.selectByExample(example);
         return comments;
     }
 
     @Override
     public void insertComment(Comment comment) {
+        comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
+        //comment.setNickname();
         commentMapper.insertSelective(comment);
     }
 
