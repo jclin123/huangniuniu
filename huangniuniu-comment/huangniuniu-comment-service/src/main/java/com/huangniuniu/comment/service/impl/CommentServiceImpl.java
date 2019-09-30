@@ -1,9 +1,9 @@
-package com.huangniuniu.service.impl;
+package com.huangniuniu.comment.service.impl;
 
-import com.huangniuniu.client.MovieClient;
+import com.huangniuniu.comment.client.MovieClient;
 import com.huangniuniu.comment.pojo.Comment;
-import com.huangniuniu.mapper.CommentMapper;
-import com.huangniuniu.service.CommentService;
+import com.huangniuniu.comment.mapper.CommentMapper;
+import com.huangniuniu.comment.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

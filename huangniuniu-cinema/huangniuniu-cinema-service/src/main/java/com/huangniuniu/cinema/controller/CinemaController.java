@@ -45,7 +45,7 @@ public class CinemaController {
      * @param id
      * @return
      */
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<Cinema> getCinemaByCinemaid(@PathVariable("id")Long id){
         Cinema cinema = cinemaService.getCinemaByCinemaid(id);
         if(cinema == null){

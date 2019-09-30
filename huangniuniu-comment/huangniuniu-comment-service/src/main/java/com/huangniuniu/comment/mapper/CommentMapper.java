@@ -1,4 +1,4 @@
-package com.huangniuniu.mapper;
+package com.huangniuniu.comment.mapper;
 
 import com.huangniuniu.comment.pojo.Comment;
 import tk.mybatis.mapper.common.Mapper;

@@ -1,4 +1,4 @@
-package com.huangniuniu.service;
+package com.huangniuniu.comment.service;
 
 import com.huangniuniu.comment.pojo.Comment;
 

@@ -21,3 +21,8 @@ eureka:
     lease-expiration-duration-in-seconds: 15
 mybatis:
   type-aliases-package: com.huangniuniu.comment.pojo
+
+huangniuniu:
+  jwt:
+    pubKeyPath: E:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: Huangniuniu_TOKEN  #cookie名称

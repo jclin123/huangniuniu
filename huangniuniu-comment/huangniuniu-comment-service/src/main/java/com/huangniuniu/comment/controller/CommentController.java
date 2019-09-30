@@ -1,7 +1,7 @@
-package com.huangniuniu.controller;
+package com.huangniuniu.comment.controller;
 
 import com.huangniuniu.comment.pojo.Comment;
-import com.huangniuniu.service.CommentService;
+import com.huangniuniu.comment.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
