@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@MapperScan("com.huangniuniu.comment.mapper")
+@MapperScan("com.huangniuniu.mapper")
 public class HuangniuniuCommentApplication {
     public static void main(String[] args) {
         SpringApplication.run(HuangniuniuCommentApplication.class);
