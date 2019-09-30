@@ -33,3 +33,15 @@ ribbon:
   ReadTimeout: 35000  # ribbon的读取时长：3500ms
   MaxAutoRetries: 0  # 当前服务重试次数
   MaxAutoRetriesNextServer: 0  # 切换服务重试次数
+
+huangniuniu:
+  jwt:
+    pubKeyPath: E:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: Huangniuniu_TOKEN  #cookie名称
+  filter:  #配置白名单，不做拦截,添加评论、购买即下订单的时需要拦截
+    allowPaths:
+      - /api/auth
+      - /api/user
+      - /api/movie
+      - /api/cinema
+      - /api/city
