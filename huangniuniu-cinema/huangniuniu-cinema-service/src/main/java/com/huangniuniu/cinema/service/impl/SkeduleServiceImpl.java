@@ -1,14 +1,13 @@
 package com.huangniuniu.cinema.service.impl;
 
+import com.huangniuniu.cinema.client.MovieClient;
 import com.huangniuniu.cinema.mapper.CinemaMapper;
 import com.huangniuniu.cinema.mapper.CinemaMovieMapper;
 import com.huangniuniu.cinema.mapper.SkeduleMapper;
 import com.huangniuniu.cinema.pojo.Cinema;
-import com.huangniuniu.cinema.pojo.CinemaDetail;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.cinema.service.SkeduleService;
-import com.huangniuniu.movie.api.MovieApi;
 import com.huangniuniu.movie.pojo.Movie;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -29,7 +30,7 @@ public class SkeduleServiceImpl implements SkeduleService {
     @Autowired
     private CinemaMovieMapper cinemaMovieMapper;
     @Autowired
-    private MovieApi movieApi;
+    private MovieClient movieClient;
 
     @Override
     @Transactional
@@ -83,46 +84,6 @@ public class SkeduleServiceImpl implements SkeduleService {
         return list;
     }
 
-    @Override
-    public CinemaDetail getCinemaDetailBycinemaId(Long cinemaid) {
-       /* //查询电影院信息
-        Cinema cinema = cinemaMapper.selectByPrimaryKey(cinemaid);
-        //1、获得该电影院未下架的电影列表，
-        //获得该电影院的中间表信息
-        Example example = new Example(Cinema_movie.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("cinemaid",cinemaid);
-        List<Cinema_movie> cinema_movies = cinemaMovieMapper.selectByExample(example);
-
-        //获得该电影院的电影列表，条件：下架时间>当前时间,筛选出来的全部都是上映或者即将上映的电影列表
-        List<Movie> movieList = new ArrayList<>();
-        Date date = new Date();
-        if(!CollectionUtils.isEmpty(cinema_movies)){
-            cinema_movies.forEach(cinema_movie -> {
-                Movie movie = movieApi.getMovieByMovieid(cinema_movie.getMovieid());
-                if(movie.getSoldOutTime().getTime()>date.getTime()){
-                    movieList.add(movie);
-                }
-            });
-        }
-
-        //2、(遍历电影列表，从而获得该电影的全部排场)，条件：排场时间>当前时间，筛选出未上映的排场,按时间升序
-
-        Map<Movie,List<Skedule>> movieListMap = new HashMap<>();
-            movieList.forEach(movie -> {
-                Example example2 = new Example(Skedule.class);
-                Example.Criteria criteria2 = example2.createCriteria();
-                criteria2.andGreaterThan("showDate",date);
-                criteria2.andEqualTo("movieid",movie.getId());
-                example2.orderBy("showDate").asc();//排场时间升序
-                List<Skedule> skedules = skeduleMapper.selectByExample(example2);
-                movieListMap.put(movie,skedules);
-            });
-        //3、给全部排场按照时间分组,给movieListMap遍历，如果前后时间不一样
-
-*/
-        return null;
-    }
 
     @Override
     public Map<String, Object> selectCinemaAndMovieListByCinemaId(Long cinemaid) {
@@ -140,7 +101,7 @@ public class SkeduleServiceImpl implements SkeduleService {
         Date date = new Date();
         if(!CollectionUtils.isEmpty(cinema_movies)){
             cinema_movies.forEach(cinema_movie -> {
-                Movie movie = movieApi.getMovieByMovieid(cinema_movie.getMovieid());
+                Movie movie = movieClient.getMovieByMovieid(cinema_movie.getMovieid());
                 if(movie.getSoldOutTime().getTime()>date.getTime()){
                     movieList.add(movie);
                 }
@@ -151,6 +112,56 @@ public class SkeduleServiceImpl implements SkeduleService {
         map.put("movieList",movieList);
         return map;
 
+    }
+
+    @Override
+    public List<String> selectSkeduleTimeListByCinemaIdAndMovieId(Long cinemaid, Long movieid) {
+        //得到排场时间列表
+        List<String> strings = skeduleMapper.selectSkeduleTimeListByCinemaIdAndMovieId(cinemaid, movieid);
+        return strings;
+    }
+
+    @Override
+    public List<Skedule> selectSkeduleListByCinemaIdAndMovieIdAndSkeduleTime(Long cinemaid, Long movieid, String Skeduletime) {
+
+        //给Skeduletime设置最大值和最小值
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String SkeduletimeMin = Skeduletime+" 00:00:00";
+        String SkeduletimeMax = Skeduletime+" 23:59:59";
+
+        //转换
+        try {
+            Example example = new Example(Skedule.class);
+            Example.Criteria criteria = example.createCriteria();
+
+            //获得当前时间
+            Date date = new Date();
+            Date mindate = format.parse(SkeduletimeMin);
+            Date maxdate = format.parse(SkeduletimeMax);
+            criteria.andBetween("showDate",mindate,maxdate);//排场时间在选择的时间的当天时间内
+            criteria.andGreaterThan("showDate",date);//超过当前时间的排场
+            criteria.andEqualTo("cinemaid",cinemaid);
+            criteria.andEqualTo("movieid",movieid);
+            List<Skedule> skeduleList = skeduleMapper.selectByExample(example);
+            return skeduleList;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void buyTicketBySkeduleId(Long skeduleId, Integer number) {
+        Skedule skedule = skeduleMapper.selectByPrimaryKey(skeduleId);
+        //修改电影院数量
+        Integer ticketsLeft = skedule.getTicketsLeft();
+        Integer ticketsSold = skedule.getTicketsSold();
+        if(ticketsLeft >= number) {
+            skedule.setTicketsSold(ticketsSold + number);
+            skedule.setTicketsLeft(ticketsLeft - number);
+        }
+        skeduleMapper.updateByPrimaryKey(skedule);
     }
 
 }

@@ -1,6 +1,5 @@
 package com.huangniuniu.cinema.service;
 
-import com.huangniuniu.cinema.pojo.CinemaDetail;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 
@@ -59,16 +58,33 @@ public interface SkeduleService {
     List<Skedule> getSkeduleByCondition(Skedule skedule);
 
     /**
-     * 根据电影院id查询电影院详情（包括电影院信息、电影院的电影信息，以及电影对应的排场信息）
-     * @param cinemaid
-     * @return
-     */
-    CinemaDetail getCinemaDetailBycinemaId(Long cinemaid);
-
-    /**
      * 当页面加载后发出，根据电影院id查询出该电影院信息以及该电影院的电影信息
      * @param cinemaid
      * @return
      */
     Map<String,Object> selectCinemaAndMovieListByCinemaId(Long cinemaid);
+
+    /**
+     * 在电影院选择电影后，显示排场时间(MM-dd)
+     * @param cinemaid
+     * @param movieid
+     * @return
+     */
+    List<String> selectSkeduleTimeListByCinemaIdAndMovieId(Long cinemaid,Long movieid);
+
+    /**
+     * 根据选择的电影院、电影、以及该电影选择的时间(MM-dd)查询排场信息
+     * @param cinemaid
+     * @param movieid
+     * @param Skeduletime
+     * @return
+     */
+    List<Skedule> selectSkeduleListByCinemaIdAndMovieIdAndSkeduleTime(Long cinemaid, Long movieid, String Skeduletime);
+
+    /**
+     * 根据排场id和购买该排场的电影票数量，修改排场的电影票数量
+     * @param skeduleId
+     * @param number
+     */
+    void buyTicketBySkeduleId(Long skeduleId, Integer number);
 }

@@ -37,7 +37,7 @@ public class CinemaMovieController {
      * @param cid
      * @return
      */
-    @GetMapping("{cid}")
+    @GetMapping("id/{cid}")
     public ResponseEntity<Map<String,Object>> getMoviesByCinemaId(@PathVariable("cid")Long cid){
         Map<String,Object> movies = cinemaMovieService.getMoviesByCinemaId(cid);
         if(CollectionUtils.isEmpty(movies)){
@@ -77,7 +77,7 @@ public class CinemaMovieController {
      * @param mid
      * @return
      */
-    @GetMapping("{cityId}/{mid}")
+    @GetMapping("citymovie/{cityId}/{mid}")
     public ResponseEntity<List<Cinema>> selectCinemaByCityIdAndMovieId(@PathVariable("cityId")Long cityId,
                                                                        @PathVariable("mid")Long mid){
         List<Cinema> cinemaList = cinemaMovieService.selectCinemaByCityIdAndMovieId(cityId, mid);

@@ -129,4 +129,18 @@ public class UserController {
             return ResponseEntity.noContent().build();//更新和删除成功，响应204
     }
 
+    /**
+     * 根据用户id查询用户信息
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<User> getUserByUserId(@PathVariable("id")Long id){
+        User user = userService.getUserByUserId(id);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
 }
