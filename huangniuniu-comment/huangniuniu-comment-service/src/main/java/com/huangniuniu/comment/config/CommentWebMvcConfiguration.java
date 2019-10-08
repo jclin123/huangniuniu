@@ -15,6 +15,6 @@ public class CommentWebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //设置拦截路径
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginInterceptor).excludePathPatterns("/Commentlist");
     }
 }

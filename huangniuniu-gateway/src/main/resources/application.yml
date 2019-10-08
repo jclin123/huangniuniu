@@ -53,3 +53,6 @@ huangniuniu:
       - /api/cinema/skedule/skeduleTimeList
       - /api/cinema/skedule/skeduleList
       - /api/cinema/skedule/buyticket
+      - /api/city/list
+      - /api/comment/Commentlist
+      - /api/comment/Comments
