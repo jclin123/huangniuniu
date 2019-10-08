@@ -69,7 +69,8 @@ public class SkeduleServiceImpl implements SkeduleService {
 
     @Override
     public List<Skedule> getSkeduleByCondition(Skedule skedule) {
-
+        System.out.println("SkeduleServiceImpl============");
+        System.out.println(skedule.toString());
         Example example = new Example(Skedule.class);
         Example.Criteria criteria = example.createCriteria();
         if(!StringUtils.isBlank(skedule.getCinemaName())){
