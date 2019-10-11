@@ -2,6 +2,8 @@ package com.huangniuniu.cinema.service;
 
 import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
+import com.huangniuniu.common.pojo.PageResult;
+import com.huangniuniu.movie.pojo.Movie;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ public interface CinemaMovieService {
     void chooseCinemaMovie(Cinema_movie cinema_movie);
 
     /**
+     * 用户前台
      * 点击电影院列表中某个电影院的查看所有电影
      * 根据电影院id查询该电影院的(正在/即将）上映电影
      * @param cinemaid
@@ -45,4 +48,13 @@ public interface CinemaMovieService {
      */
     List<Cinema> selectCinemaByCityIdAndMovieId(Long cityid, Long movieid);
 
+    /**
+     * 管理后台
+     * 根据电影院id分页查询该电影院的电影
+     * @param cid
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    PageResult<Movie> getMoviesPageByCinemaId(Long cid, Integer pageNumber, Integer pageSize);
 }

@@ -41,15 +41,9 @@ huangniuniu:
   filter:  #配置白名单，不做拦截,添加评论、购买即下订单的时、以及后台管理操作需要拦截
     allowPaths:
       - /api/auth
-      - /api/user/phonenumber
-      - /api/user/code
-      - /api/user/registry
-      - /api/user/accountPassword
-      - /api/user/phonenumberCode
-      - /api/cinema/pagelist
-      - /api/cinema/cinemaMovie/id
-      - /api/cinema/cinemaMovie/citymovie
-      - /api/cinema/skedule/cinemaMovieList
-      - /api/cinema/skedule/skeduleTimeList
-      - /api/cinema/skedule/skeduleList
-      - /api/cinema/skedule/buyticket
+      - /api/user
+      - /api/cinema
+      - /api/movie
+      - /api/city
+      - /api/comment
+      - /api/order

@@ -1,5 +1,6 @@
 package com.huangniuniu.user.service;
 
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.user.pojo.User;
 
 import java.util.List;
@@ -52,11 +53,13 @@ public interface UserService {
     List<User> getAllUser();
 
     /**
-     * 条件查询用户信息
+     * 根据条件分页查询用户信息
      * @param user
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
-    List<User> getUserByCondition(User user);
+    PageResult<User> getUserByCondition(User user,Integer pageNumber,Integer pageSize);
 
     /**
      * 根据用户id查询用户信息
@@ -64,4 +67,12 @@ public interface UserService {
      * @return
      */
     User getUserByUserId(Long id);
+
+    /**
+     * 分页查询所有用户
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    PageResult<User> queryAllByPage(Integer pageNumber,Integer pageSize);
 }

@@ -1,11 +1,13 @@
 package com.huangniuniu.user.controller;
 
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.user.pojo.User;
 import com.huangniuniu.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -105,17 +107,37 @@ public class UserController {
     }
 
     /**
-     * 根据条件查询用户信息
+     * 分页查询所有用户
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("queryAllByPage")
+    public ResponseEntity<PageResult<User>> queryAllByPage(@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
+                                                           @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageResult<User> pageResult = this.userService.queryAllByPage(pageNumber,pageSize);
+        if(pageResult == null || CollectionUtils.isEmpty(pageResult.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pageResult);
+    }
+
+    /**
+     * 根据条件分页查询用户信息
      * @param user
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
     @GetMapping("conditionQuery")
-    public ResponseEntity<List<User>> getUserByCondition(User user){
-        List<User> list = userService.getUserByCondition(user);
-        if(list == null){
-            return ResponseEntity.notFound().build();//查询不到，响应404
+    public ResponseEntity<PageResult<User>> getUserByCondition(User user,
+                                                         @RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
+                                                         @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageResult<User> pageResult = userService.getUserByCondition(user,pageNumber,pageSize);
+        if(pageResult == null || CollectionUtils.isEmpty(pageResult.getItems())){
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(pageResult);
     }
 
     /**
@@ -142,5 +164,6 @@ public class UserController {
         }
         return ResponseEntity.ok(user);
     }
+
 
 }
