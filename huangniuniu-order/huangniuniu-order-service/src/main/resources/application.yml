@@ -19,3 +19,23 @@ mybatis:
   type-aliases-package: com.huangniuniu.order.pojo
   configuration:
     map-underscore-to-camel-case: true    #开启驼峰命名
+
+huangniuniu:
+  worker:
+    workerId: 1
+    datacenterId: 1
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000 # 熔断器的超时时长：5000ms
+ribbon:
+  ConnectionTimeout: 3000  # ribbon的连接时长：1000ms
+  ReadTimeout: 35000  # ribbon的读取时长：3500ms
+  MaxAutoRetries: 0  # 当前服务重试次数
+  MaxAutoRetriesNextServer: 0  # 切换服务重试次数
+feign:
+  httpclient:
+    enabled: true

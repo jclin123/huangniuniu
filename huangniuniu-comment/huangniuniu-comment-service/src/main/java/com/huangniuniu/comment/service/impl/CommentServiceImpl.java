@@ -1,12 +1,17 @@
 package com.huangniuniu.comment.service.impl;
 
+import com.huangniuniu.auth.pojo.UserInfo;
+import com.huangniuniu.auth.utils.JwtUtils;
 import com.huangniuniu.comment.client.MovieClient;
+import com.huangniuniu.comment.config.JwtProperties;
+import com.huangniuniu.comment.interceptor.LoginInterceptor;
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.mapper.CommentMapper;
 import com.huangniuniu.comment.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -19,6 +24,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     public MovieClient movieClient;
+
+    @Autowired
+    public JwtProperties jwtProperties;
 
     @Override
     public List<Comment> getAllComment() {
@@ -58,7 +66,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void insertComment(Comment comment) {
         comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
-        //comment.setNickname();
+        UserInfo userInfo = LoginInterceptor.getuserInfo();
+        comment.setNickname(userInfo.getUsername());
         commentMapper.insertSelective(comment);
     }
 
