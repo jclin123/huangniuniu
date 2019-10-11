@@ -57,4 +57,5 @@ public interface CinemaMovieService {
      * @return
      */
     PageResult<Movie> getMoviesPageByCinemaId(Long cid, Integer pageNumber, Integer pageSize);
+
 }

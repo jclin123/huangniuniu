@@ -94,6 +94,7 @@ public class CinemaMovieServiceImpl implements CinemaMovieService {
         Example example = new Example(Cinema_movie.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("cinemaid",cid);
+        example.orderBy("movieid").desc();
 
         List<Cinema_movie> cinema_movies = cinemaMovieMapper.selectByExample(example);//两个id加一个主键
 
@@ -107,4 +108,5 @@ public class CinemaMovieServiceImpl implements CinemaMovieService {
         //封装pageresult
         return new PageResult(pageInfo.getTotal(),pageInfo.getList());
     }
+
 }

@@ -15,7 +15,7 @@ eureka:
 huangniuniu:
   jwt:
     secret: Huangniuniu@Login(Auth}*^31)&JC123% # 登录校验的密钥
-    pubKeyPath: E:\\tmp\\rsa\\rsa.pub # 公钥地址
-    priKeyPath: E:\\tmp\\rsa\\rsa.pri # 私钥地址
+    pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
+    priKeyPath: D:\\tmp\\rsa\\rsa.pri # 私钥地址
     expire: 30 # 过期时间,单位分钟
     cookieName: Huangniuniu_TOKEN  #cookie名称
