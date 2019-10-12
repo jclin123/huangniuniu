@@ -2,11 +2,13 @@ package com.huangniuniu.order.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.common.utils.IdWorker;
 import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.order.client.SkeduleClient;
+import com.huangniuniu.order.interceptor.LoginInterceptor;
 import com.huangniuniu.order.mapper.OrderMapper;
 import com.huangniuniu.order.pojo.Notice;
 import com.huangniuniu.order.pojo.OrderMessage;
@@ -54,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
                     orderMessage.setMovieName(skeduleBySkeduleid.getMovieName());
                     orderMessage.setRoomName(skeduleBySkeduleid.getRoomName());
                     orderMessage.setShowDate(skeduleBySkeduleid.getShowDate());
-                    orderMessage.setTotalPrice(userOrder.getOrderNum()*skeduleBySkeduleid.getPrice());
+                   orderMessage.setTotalPrice(userOrder.getOrderNum()*skeduleBySkeduleid.getPrice());
                     orderMessageList.add(orderMessage);
                 }
 
@@ -123,6 +125,9 @@ public class OrderServiceImpl implements OrderService {
     public void insertUserOrderMessage(UserOrder userOrder){
         long orderId = idWorker.nextId();
         userOrder.setId(orderId);
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        userOrder.setUserid(userInfo.getId());
+        userOrder.setNickname(userInfo.getUsername());
         userOrder.setOrderTime(new Date());
         orderMapper.insertSelective(userOrder);
     }

@@ -24,6 +24,9 @@ huangniuniu:
   worker:
     workerId: 1
     datacenterId: 1
+  jwt:
+    pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: Huangniuniu_TOKEN  #cookie名称
 hystrix:
   command:
     default:
