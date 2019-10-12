@@ -1,5 +1,8 @@
 package com.huangniuniu.user.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.common.utils.NumberUtils;
 import com.huangniuniu.user.mapper.UserMapper;
 import com.huangniuniu.user.pojo.User;
@@ -11,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -107,7 +109,7 @@ public class UserServiceImpl implements UserService {
         user.setAccount(account);
         User user1 = userMapper.selectOne(user);
         //判断该账号的用户是否存在
-        if(user1 == null){
+        if(user1 == null || user1.getRoleType() != 0){
             return null;
         }
 
@@ -130,7 +132,7 @@ public class UserServiceImpl implements UserService {
         user.setAccount(phonenum);
         User user1 = userMapper.selectOne(user);
         //判断用户是否存在
-        if(user1 == null){
+        if(user1 == null || user1.getRoleType() != 0){
             return null;
         }
         //存在，判断验证码的合法性
@@ -168,8 +170,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserByCondition(User user) {
+    public PageResult<User> getUserByCondition(User user,Integer pageNumber,Integer pageSize) {
 
+        PageHelper.startPage(pageNumber,pageSize);
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         if(!StringUtils.isBlank(user.getNickname())){
@@ -180,12 +183,24 @@ public class UserServiceImpl implements UserService {
         }
         criteria.andEqualTo("roleType",1);//用户信息
         List<User> users = userMapper.selectByExample(example);
-        return users;
+
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        return new PageResult(pageInfo.getTotal(),pageInfo.getList());
+
     }
 
     @Override
     public User getUserByUserId(Long id) {
         return  userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public PageResult<User> queryAllByPage(Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+        List<User> users = userMapper.selectAll();
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        PageResult pageResult = new PageResult(pageInfo.getTotal(), pageInfo.getList());
+        return pageResult;
     }
 
     private void updateIsDisable(Long id,Integer isd){

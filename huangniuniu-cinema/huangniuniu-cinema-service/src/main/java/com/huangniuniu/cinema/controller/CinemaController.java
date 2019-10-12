@@ -79,14 +79,34 @@ public class CinemaController {
     }
 
     /**
-     * 条件查询所有电影院，获得条件查询后的电影院列表
-     * @param cinema
+     * 分页查询电影院信息
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
-    @GetMapping("listCondition")
-    public ResponseEntity<List<Cinema>> getCinemaByCondition(Cinema cinema){
-        List<Cinema> list = cinemaService.getCinemaByCondition(cinema);
-        if(CollectionUtils.isEmpty(list)){
+    @GetMapping("listPage")
+    public ResponseEntity<PageResult<Cinema>> querylistPage(@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
+                                                            @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageResult<Cinema> list = this.cinemaService.querylistPage(pageNumber,pageSize);
+        if(list == null || CollectionUtils.isEmpty(list.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 条件分页查询所有电影院，获得条件查询后的电影院列表
+     * @param cinema
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("listConditionPage")
+    public ResponseEntity<PageResult<Cinema>> getCinemaByCondition(Cinema cinema,
+                                                             @RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
+                                                             @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageResult<Cinema> list = cinemaService.getCinemaByCondition(cinema,pageNumber,pageSize);
+        if(list == null || CollectionUtils.isEmpty(list.getItems())){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(list);
@@ -100,8 +120,8 @@ public class CinemaController {
      * @return
      */
     @GetMapping("pagelist")
-    public ResponseEntity<PageResult<Cinema>> getAllCinemasByPage(@RequestParam(name = "pageNumber",defaultValue = "1")Integer pageNumber,
-                                                                 @RequestParam(name = "rows",defaultValue = "6")Integer rows,
+    public ResponseEntity<PageResult<Cinema>> getAllCinemasByPage(@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
+                                                                 @RequestParam(value = "rows",defaultValue = "6")Integer rows,
                                                                  @RequestParam("cityid")Long cityid){
         PageResult<Cinema> list = cinemaService.getAllCinemasByPage(pageNumber, rows, cityid);
         if(list == null || CollectionUtils.isEmpty(list.getItems())){

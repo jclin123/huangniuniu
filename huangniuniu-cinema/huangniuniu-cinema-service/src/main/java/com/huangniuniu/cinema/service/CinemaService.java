@@ -39,11 +39,13 @@ public interface CinemaService {
     List<Cinema> getAllCinema();
 
     /**
-     * 根据查询条件查询电影院信息
+     * 条件分页查询所有电影院，获得条件查询后的电影院列表
      * @param cinema
+     * @param pageNumber
+     * @param pageSize
      * @return
      */
-    List<Cinema> getCinemaByCondition(Cinema cinema);
+    PageResult<Cinema> getCinemaByCondition(Cinema cinema,Integer pageNumber,Integer pageSize);
 
 
     /**
@@ -55,5 +57,11 @@ public interface CinemaService {
      */
     PageResult<Cinema> getAllCinemasByPage(Integer pageNumber, Integer rows, Long cid);
 
-
+    /**
+     * 分页查询电影院信息
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    PageResult<Cinema> querylistPage(Integer pageNumber, Integer pageSize);
 }

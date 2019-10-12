@@ -1,5 +1,6 @@
 package com.huangniuniu.order.pojo;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-@Getter
-@Setter
+//@Getter
+//@Setter
+@Data
 @Table(name = "userorder")
 public class UserOrder {
 
