@@ -3,7 +3,6 @@ package com.huangniuniu.movie.service;
 import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.movie.pojo.MovieDetail;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface MovieService {
     /**
@@ -50,4 +49,10 @@ public interface MovieService {
      * @return
      */
     MovieDetail getMovieDetail(Long movieid);
+
+    /**
+     * 根据电影id修改电影信息
+     * @param movie
+     */
+    public void updateMovie(Movie movie);
 }

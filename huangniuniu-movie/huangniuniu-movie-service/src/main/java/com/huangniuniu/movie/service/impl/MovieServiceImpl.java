@@ -101,6 +101,15 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
+     * 根据电影id修改电影信息
+     * @param movie
+     */
+    @Transactional
+    public void updateMovie(Movie movie){
+        this.movieMapper.updateByPrimaryKeySelective(movie);
+    }
+
+    /**
      * 根据条件查询电影（名称、类型、地区模糊匹配，评分相等）
      * @param movie
      * @return
