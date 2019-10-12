@@ -1,5 +1,7 @@
 package com.huangniuniu.comment.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.auth.utils.JwtUtils;
 import com.huangniuniu.comment.client.MovieClient;
@@ -8,6 +10,7 @@ import com.huangniuniu.comment.interceptor.LoginInterceptor;
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.mapper.CommentMapper;
 import com.huangniuniu.comment.service.CommentService;
+import com.huangniuniu.common.pojo.PageResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,17 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getAllComment() {
         List<Comment> comments = commentMapper.selectAll();
         return comments;
+    }
+
+    @Override
+    public PageResult<Comment> getAllCommentToPage(Integer pn,Integer pagesize) {
+        PageHelper.startPage(pn,pagesize);
+        List<Comment> comments = commentMapper.selectAll();
+        PageInfo pageInfo = new PageInfo(comments,pagesize);
+        PageResult<Comment> pageResult = new PageResult<Comment>();
+        pageResult.setItems(pageInfo.getList());
+        pageResult.setTotal(pageInfo.getTotal());
+        return pageResult;
     }
 
     @Override
@@ -61,6 +75,31 @@ public class CommentServiceImpl implements CommentService {
         }
         List<Comment> comments = commentMapper.selectByExample(example);
         return comments;
+    }
+
+    @Override
+    public PageResult<Comment> getCommentByConditionToPage(Comment comment, Integer pn, Integer pagesize) {
+        PageHelper.startPage(pn,pagesize);
+        Example example = new Example(Comment.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(comment.getScore()!=null){
+            criteria.andEqualTo("score",comment.getScore());
+        }
+        if(!StringUtils.isBlank(comment.getCommentWords())){
+            criteria.andLike("commentWords","%"+comment.getCommentWords()+"%");
+        }
+        if(!StringUtils.isBlank(comment.getMovieName())){
+            criteria.andLike("movieName","%"+comment.getMovieName()+"%");
+        }
+        if(!StringUtils.isBlank(comment.getNickname())){
+            criteria.andLike("nickname","%"+comment.getNickname()+"%");
+        }
+        List<Comment> comments = commentMapper.selectByExample(example);
+        PageInfo<Comment> pageInfo = new PageInfo(comments,pagesize);
+        PageResult<Comment> pageResult = new PageResult<Comment>();
+        pageResult.setItems(pageInfo.getList());
+        pageResult.setTotal(pageInfo.getTotal());
+        return  pageResult;
     }
 
     @Override
