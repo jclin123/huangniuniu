@@ -72,7 +72,7 @@ public class SkeduleServiceImpl implements SkeduleService {
     }
 
     @Override
-    public PageResult<Skedule> getSkeduleByCondition(Skedule skedule, Integer pageNumber, Integer pageSize) {
+    public PageResult<Skedule> getSkeduleByConditionpage(Skedule skedule, Integer pageNumber, Integer pageSize) {
 
         PageHelper.startPage(pageNumber,pageSize);
 
@@ -95,6 +95,22 @@ public class SkeduleServiceImpl implements SkeduleService {
 
     }
 
+    @Override
+    public List<Skedule> getSkeduleByCondition(Skedule skedule) {
+        Example example = new Example(Skedule.class);
+        Example.Criteria criteria = example.createCriteria();
+        example.orderBy("cinemaName").asc();
+        example.orderBy("movieName").asc();
+        example.orderBy("showDate").desc();
+        if(!StringUtils.isBlank(skedule.getCinemaName())){
+            criteria.andLike("cinemaName","%"+skedule.getCinemaName()+"%");
+        }
+        if(!StringUtils.isBlank(skedule.getMovieName())){
+            criteria.andLike("movieName","%"+skedule.getMovieName()+"%");
+        }
+        List<Skedule> list = skeduleMapper.selectByExample(example);
+        return list;
+    }
 
     @Override
     public Map<String, Object> selectCinemaAndMovieListByCinemaId(Long cinemaid) {

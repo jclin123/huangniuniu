@@ -104,12 +104,26 @@ public class SkeduleController {
      * @param pageSize
      * @return
      */
-    @GetMapping("conditionlsit")
-    public ResponseEntity<PageResult<Skedule>> getSkeduleByCondition(Skedule skedule,
+    @GetMapping("conditionlsitpage")
+    public ResponseEntity<PageResult<Skedule>> getSkeduleByConditionpage(Skedule skedule,
                                                                      @RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
                                                                      @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
-        PageResult<Skedule> list = skeduleService.getSkeduleByCondition(skedule,pageNumber,pageSize);
+        PageResult<Skedule> list = skeduleService.getSkeduleByConditionpage(skedule,pageNumber,pageSize);
         if(list == null || CollectionUtils.isEmpty(list.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 不分页条件查询所有排场
+     * @param skedule
+     * @return
+     */
+    @GetMapping("conditionlist")
+    public ResponseEntity<List<Skedule>> getSkeduleByCondition(Skedule skedule){
+        List<Skedule> list = skeduleService.getSkeduleByCondition(skedule);
+        if(CollectionUtils.isEmpty(list)){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(list);
