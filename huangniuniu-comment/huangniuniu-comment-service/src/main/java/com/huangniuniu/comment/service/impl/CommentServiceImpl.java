@@ -3,20 +3,22 @@ package com.huangniuniu.comment.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huangniuniu.auth.pojo.UserInfo;
-import com.huangniuniu.auth.utils.JwtUtils;
 import com.huangniuniu.comment.client.MovieClient;
 import com.huangniuniu.comment.interceptor.LoginInterceptor;
-import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.mapper.CommentMapper;
+import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.service.CommentService;
 import com.huangniuniu.common.pojo.PageResult;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CookieValue;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -26,6 +28,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     public MovieClient movieClient;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
 
     @Override
@@ -103,8 +108,17 @@ public class CommentServiceImpl implements CommentService {
     public void insertComment(Comment comment) {
         comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
         UserInfo userInfo = LoginInterceptor.getuserInfo();
+        comment.setUserid(userInfo.getId());
         comment.setNickname(userInfo.getUsername());
+        Date date = new Date();
+        comment.setCommentTime(date);
         commentMapper.insertSelective(comment);
+        //查询该评论的电影平均得分
+        Float score = this.getMovieScoreByMovieId(comment.getMovieid());
+        Map<String,Object> msg = new HashMap<>();
+        msg.put("movieid",comment.getMovieid());
+        msg.put("score",score);
+        amqpTemplate.convertAndSend("huangniuniu.movie.exchange","movie.score",msg);
     }
 
     @Override

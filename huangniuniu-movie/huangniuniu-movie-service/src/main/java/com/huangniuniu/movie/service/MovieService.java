@@ -49,4 +49,11 @@ public interface MovieService {
      * @return
      */
     MovieDetail getMovieDetail(Integer page, Integer rows,Long movieid);
+
+    /**
+     * 根据电影id修改电影信息
+     * @param movie
+     */
+    public void updateMovie(Movie movie);
+
 }
