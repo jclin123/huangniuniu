@@ -97,5 +97,12 @@ public interface SkeduleService {
      * @param pageSize
      * @return
      */
-    PageResult<Skedule> getSkeduleByCondition(Skedule skedule, Integer pageNumber, Integer pageSize);
+    PageResult<Skedule> getSkeduleByConditionpage(Skedule skedule, Integer pageNumber, Integer pageSize);
+
+    /**
+     * 不分页条件查询所有排场
+     * @param skedule
+     * @return
+     */
+    List<Skedule> getSkeduleByCondition(Skedule skedule);
 }

@@ -20,16 +20,12 @@ public interface SkeduleApi {
     Skedule getSkeduleBySkeduleid(@PathVariable("sid")Long sid);
 
     /**
-     * 条件查询排场信息
+     * 不分页条件查询所有排场
      * @param skedule
      * @return
      */
-//    @GetMapping(value = "skedule/conditionlsit",consumes="application/json")
-//   List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
-
-    @RequestMapping(value="skedule/conditionlsit",method = RequestMethod.POST)
-    List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
-
+    @PostMapping("skedule/conditionlist")
+    public List<Skedule> getSkeduleByCondition(Skedule skedule);
 
     /**
      * 根据排场id和购买该排场的电影票数量，修改排场的电影票数量

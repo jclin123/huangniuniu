@@ -1,56 +1,40 @@
 package com.huangniuniu.movie.service;
 
-import com.huangniuniu.movie.mapper.ActorMapper;
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.pojo.Actor;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
-
-@Service
-public class ActorService {
-    @Autowired
-    private ActorMapper actorMapper;
-
-    @Transactional
-    public void insertActor(Actor actor){
-        actorMapper.insertSelective(actor);
-
-    }
-
-    public void deleteActor(Long id){
-        actorMapper.deleteByPrimaryKey(id);
-    }
-
-    public void updateActor(Actor actor){
-        actorMapper.updateByPrimaryKeySelective(actor);
-    }
-
-    public List<Actor> getAllActor(){
-        return actorMapper.selectAll();
-    }
-
-    public List<Actor> getActorByCondition(Actor actor){
-        Example example = new Example(Actor.class);
-        Example.Criteria criteria=example.createCriteria();
-        if(!StringUtils.isBlank(actor.getActorName())){
-            criteria.andLike("actorName","%"+actor.getActorName()+"%");
-        }
-        if(actor.getId()!=null){
-            criteria.andEqualTo("id",actor.getId());
-        }
-        return actorMapper.selectByExample(example);
-
-    }
-
-    public List<Actor> getActorByMovieid(Long mid){
-
-        return actorMapper.getActorByMovieid(mid);
-    }
-
-
-
+public interface ActorService {
+    /**
+     * 添加演员
+     * @param actor
+     */
+    void insertActor(Actor actor);
+    /**
+     *删除演员
+     * @param id
+     */
+    void deleteActor(Long id);
+    /**
+     *更新演员信息
+     * @param actor
+     */
+    void updateActor(Actor actor);
+    /**
+     *获得所有演员信息
+     * @return
+     */
+    PageResult<Actor> getAllActor(Integer page, Integer rows);
+    /**
+     *根据条件查询演员（名字模糊匹配、编号相等）
+     * @param actor
+     * @return
+     */
+    PageResult<Actor> getActorByCondition(Integer page, Integer rows,Actor actor);
+    /**
+     *根据电影id查询所有演员
+     * @param mid
+     * @return
+     */
+    PageResult<Actor> getActorByMovieid(Integer page, Integer rows,Long mid);
 }

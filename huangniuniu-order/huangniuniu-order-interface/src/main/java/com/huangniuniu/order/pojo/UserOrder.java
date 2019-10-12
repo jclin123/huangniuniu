@@ -3,6 +3,7 @@ package com.huangniuniu.order.pojo;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ import java.util.Date;
 //@Setter
 @Data
 @Table(name = "userorder")
+@Accessors(chain = true)
 public class UserOrder {
 
     @Id

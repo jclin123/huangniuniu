@@ -3,7 +3,6 @@ package com.huangniuniu.cinema.controller;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.cinema.service.SkeduleService;
-import com.huangniuniu.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,22 +45,6 @@ public class SkeduleController {
     }
 
     /**
-     * 分页查询排场信息
-     * @param pageNumber
-     * @param pageSize
-     * @return
-     */
-    @GetMapping("listPage")
-    public ResponseEntity<PageResult<Skedule>> getAllSkeduleByPage(@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
-                                                                   @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
-       PageResult<Skedule> list = this.skeduleService.getAllSkeduleByPage(pageNumber,pageSize);
-        if(list == null || CollectionUtils.isEmpty(list.getItems())){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(list);
-    }
-
-    /**
      * 根据排场id查询该排场
      * @param sid
      * @return
@@ -98,18 +81,30 @@ public class SkeduleController {
     }
 
     /**
-     * 条件查询排场信息并且分页
+     * 条件查询排场信息
      * @param skedule
-     * @param pageNumber
-     * @param pageSize
      * @return
      */
-    @GetMapping("conditionlsit")
-    public ResponseEntity<PageResult<Skedule>> getSkeduleByCondition(Skedule skedule,
+    @GetMapping("conditionlsitpage")
+    public ResponseEntity<PageResult<Skedule>> getSkeduleByConditionpage(Skedule skedule,
                                                                      @RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
                                                                      @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
-        PageResult<Skedule> list = skeduleService.getSkeduleByCondition(skedule,pageNumber,pageSize);
+        PageResult<Skedule> list = skeduleService.getSkeduleByConditionpage(skedule,pageNumber,pageSize);
         if(list == null || CollectionUtils.isEmpty(list.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 不分页条件查询所有排场
+     * @param skedule
+     * @return
+     */
+    @PostMapping("conditionlist")
+    public ResponseEntity<List<Skedule>> getSkeduleByCondition(Skedule skedule){
+        List<Skedule> list = skeduleService.getSkeduleByCondition(skedule);
+        if(CollectionUtils.isEmpty(list)){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(list);

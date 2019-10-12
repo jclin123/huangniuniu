@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.auth.utils.JwtUtils;
 import com.huangniuniu.comment.client.MovieClient;
-import com.huangniuniu.comment.config.JwtProperties;
 import com.huangniuniu.comment.interceptor.LoginInterceptor;
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.mapper.CommentMapper;
@@ -28,8 +27,6 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     public MovieClient movieClient;
 
-    @Autowired
-    public JwtProperties jwtProperties;
 
     @Override
     public List<Comment> getAllComment() {
