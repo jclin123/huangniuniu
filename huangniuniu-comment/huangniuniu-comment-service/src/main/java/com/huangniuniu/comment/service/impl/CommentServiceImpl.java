@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,14 +108,17 @@ public class CommentServiceImpl implements CommentService {
     public void insertComment(Comment comment) {
         comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
         UserInfo userInfo = LoginInterceptor.getuserInfo();
+        comment.setUserid(userInfo.getId());
         comment.setNickname(userInfo.getUsername());
+        Date date = new Date();
+        comment.setCommentTime(date);
         commentMapper.insertSelective(comment);
         //查询该评论的电影平均得分
         Float score = this.getMovieScoreByMovieId(comment.getMovieid());
         Map<String,Object> msg = new HashMap<>();
         msg.put("movieid",comment.getMovieid());
         msg.put("score",score);
-        amqpTemplate.convertAndSend("huangniuniu.movie.exchange","movie:score",msg);
+        amqpTemplate.convertAndSend("huangniuniu.movie.exchange","movie.score",msg);
     }
 
     @Override

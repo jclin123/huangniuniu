@@ -7,6 +7,11 @@ spring:
     url: jdbc:mysql://rm-wz9nd973maez52c107o.mysql.rds.aliyuncs.com:3306/huangniuniu
     username: jc
     password: jc123456AA
+  rabbitmq:
+    host: 47.102.97.195
+    username: huangniuniu
+    password: huangniuniu
+    virtual-host: /huangniuniu
 
 eureka:
   client:

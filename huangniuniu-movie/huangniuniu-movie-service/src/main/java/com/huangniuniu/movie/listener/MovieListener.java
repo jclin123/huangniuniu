@@ -22,7 +22,7 @@ public class MovieListener {
             value = @Queue(value = "huangniuniu.movie.queue", durable = "true"),
             exchange = @Exchange(value = "huangniuniu.movie.exchange",
                     ignoreDeclarationExceptions = "true"),
-            key = {"movie.code"}))
+            key = {"movie.score"}))
     public void updateMovieScore(Map<String,Object> msg) {
         if(CollectionUtils.isEmpty(msg)){
             return ;

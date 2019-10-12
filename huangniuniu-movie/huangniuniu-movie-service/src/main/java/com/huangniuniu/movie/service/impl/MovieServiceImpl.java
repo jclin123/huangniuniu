@@ -15,7 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -184,7 +183,7 @@ public class MovieServiceImpl implements MovieService {
         List<Actor> actorByMovieid = actorMapper.getActorByMovieid(movieid);
         Comment comment = new Comment();
         comment.setMovieid(movieid);
-        List<Comment> allComment = commentClient.getAllComment(comment);
+        //List<Comment> allComment = commentClient.getAllComment(comment);
         if(movie!=null){
             movieDetail.setId(movie.getId());
             movieDetail.setMovieName(movie.getMovieName());
@@ -201,9 +200,9 @@ public class MovieServiceImpl implements MovieService {
         if(actorByMovieid!=null){
             movieDetail.setActorList(actorByMovieid);
         }
-        if(allComment!=null){
-            movieDetail.setCommentList(allComment);
-        }
+        //if(allComment!=null){
+       //     movieDetail.setCommentList(allComment);
+       // }
         return movieDetail;
 
     }
