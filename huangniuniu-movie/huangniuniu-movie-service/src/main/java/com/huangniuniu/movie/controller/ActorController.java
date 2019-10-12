@@ -50,7 +50,7 @@ public class ActorController {
     }
 
     /**
-     * 获得所有演员信息
+     * 分页获得所有演员信息
      * @return
      */
     @GetMapping("listActor")
@@ -65,7 +65,7 @@ public class ActorController {
     }
 
     /**
-     * 根据条件查询演员（名字模糊匹配、编号相等）
+     * 分页根据条件查询演员（名字模糊匹配、编号相等）
      * @param actor
      * @return
      */
@@ -81,7 +81,7 @@ public class ActorController {
     }
 
     /**
-     * 根据电影id查询所有演员
+     * 分页根据电影id查询所有演员
      * @param mid
      * @return
      */

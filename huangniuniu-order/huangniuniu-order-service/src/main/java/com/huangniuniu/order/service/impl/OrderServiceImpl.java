@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         if(userOrders!=null){
             userOrders.forEach(userOrder->{
                 OrderMessage orderMessage = new OrderMessage();
-//                Long skeduleid = userOrder.getSkeduleid();
+                //根据排场id获取排场信息
                 Skedule skeduleBySkeduleid = skeduleClient.getSkeduleBySkeduleid(userOrder.getSkeduleid());
                 if(skeduleBySkeduleid!=null){
                     orderMessage.setId(userOrder.getId());
@@ -72,11 +72,12 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     public PageResult<OrderMessage> selectOrderMessageByUserid(Integer page, Integer rows,Long userid){
+        //根据用户id查询该用户订单
         List<UserOrder> userOrders=this.selectUserOrderByUserid(userid);
         List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
         if(userOrders!=null){
             userOrders.forEach(userOrder -> {
-//                Long skeduleid = userOrder.getSkeduleid();
+                //根据排场id获取排场信息
                 Skedule skeduleBySkeduleid = skeduleClient.getSkeduleBySkeduleid(userOrder.getSkeduleid());
                 if(skeduleBySkeduleid!=null){
                     OrderMessage orderMessage = new OrderMessage();
@@ -133,6 +134,7 @@ public class OrderServiceImpl implements OrderService {
      */
     public Notice sendNotice(Long orderid){
         Notice notice = new Notice();
+        //根据订单id查询用户订单
         UserOrder userOrder = orderMapper.selectByPrimaryKey(orderid);
         Skedule skeduleBySkeduleid = skeduleClient.getSkeduleBySkeduleid(userOrder.getSkeduleid());
         notice.setPrice(skeduleBySkeduleid.getPrice());
@@ -151,24 +153,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-//    public List<Skedule> test(OrderMessage orderMessage){
-//        String cinemaName = orderMessage.getCinemaName();
-//        String movieName = orderMessage.getMovieName();
-//        System.out.println(cinemaName);
-//        System.out.println(movieName);
-//        System.out.println(orderMessage.toString());
-//        Skedule skedule = new Skedule();
-//        skedule.setCinemaName(cinemaName);
-//        skedule.setMovieName(movieName);
-//        System.out.println(skedule.toString());
-//        List<Skedule> skeduleByCondition = skeduleClient.getSkeduleByCondition(skedule);
-//        skeduleByCondition.forEach(skedule1 -> {
-//            System.out.println(skedule1.toString());
-//        });
-//        return skeduleByCondition;
-//
-//    }
-
 
     /**
      *根据条件查询订单信息（电影、影院名称模糊匹配，购票数量相等）
@@ -176,15 +160,15 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     public PageResult<OrderMessage> getOrderMessageByCondition(Integer page, Integer rows,OrderMessage orderMessage){
-//        String cinemaName = orderMessage.getCinemaName();
-//        String movieName = orderMessage.getMovieName();
         Skedule skedule = new Skedule();
         skedule.setCinemaName(orderMessage.getCinemaName());
         skedule.setMovieName(orderMessage.getMovieName());
+        //条件查询排场列表
         List<Skedule> skeduleByCondition = skeduleClient.getSkeduleByCondition(skedule);
         List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
         if(skeduleByCondition!=null){
             skeduleByCondition.forEach(skedule1 -> {
+                //获取每个排场id
                 Long id = skedule1.getId();
                 Example example = new Example(UserOrder.class);
                 Example.Criteria criteria = example.createCriteria();

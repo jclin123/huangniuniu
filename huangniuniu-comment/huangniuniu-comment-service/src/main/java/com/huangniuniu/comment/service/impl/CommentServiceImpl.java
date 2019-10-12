@@ -118,19 +118,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PageResult<Comment> getCommentsBymovie(Long movieid, Integer pn, Integer pagesize) {
-        PageHelper.startPage(pn,pagesize);
+    public List<Comment> getCommentsBymovie(Long movieid) {
+
         Example example = new Example(Comment.class);
         Example.Criteria criteria = example.createCriteria();
         if(movieid!=null){
             criteria.andEqualTo("movieid",movieid);
         }
         List<Comment> comments = commentMapper.selectByExample(example);
-        PageInfo<Comment> pageInfo = new PageInfo(comments,pagesize);
-        PageResult<Comment> pageResult = new PageResult<Comment>();
-        pageResult.setItems(pageInfo.getList());
-        pageResult.setTotal(pageInfo.getTotal());
-        return  pageResult;
+        return  comments;
     }
 
     @Override

@@ -54,11 +54,9 @@ public interface CommentService {
     /**
      * 根据movieid查询评论，返回所有符合评论并分页
      * @param movieid
-     * @param pn
-     * @param pagesize
      * @return
      */
-    PageResult<Comment> getCommentsBymovie(Long movieid, Integer pn, Integer pagesize);
+    List<Comment> getCommentsBymovie(Long movieid);
 
     /**
      * 根据movieid获得电影平均评分

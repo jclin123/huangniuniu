@@ -22,6 +22,7 @@ public class ActorMovieServiceImpl {
     @Transactional
     public Boolean addActorAndMovie(ActorMovie actorMovie){
         ActorMovie actorMovie1 = actorMovieMapper.selectOne(actorMovie);
+        //演员不能重复
         if(actorMovie1==null){
             actorMovieMapper.insertSelective(actorMovie);
             return true;

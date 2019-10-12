@@ -106,18 +106,14 @@ public class CommentController {
     /**
      * 根据movieid查询评论，返回所有符合评论并分页
      * @param movieid
-     * @param pn
-     * @param pagesize
      * @return
      */
     @GetMapping("bymovieid/{movieid}")
-    public ResponseEntity<PageResult<Comment>>  getCommentsBymovie(@PathVariable("movieid")Long movieid,
-                                                                   @RequestParam(value = "pn",defaultValue = "1")Integer pn,
-                                                                   @RequestParam(value = "pagesize",defaultValue = "10")Integer pagesize){
-        PageResult<Comment> comments = commentService.getCommentsBymovie(movieid,pn,pagesize);
-        if(comments == null || CollectionUtils.isEmpty(comments.getItems())){
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<List<Comment>>  getCommentsBymovie(@PathVariable("movieid")Long movieid){
+        List<Comment> comments = commentService.getCommentsBymovie(movieid);
+//        if(comments == null || CollectionUtils.isEmpty(comments)){
+//            return ResponseEntity.notFound().build();
+//        }
         return ResponseEntity.ok(comments);
     }
 

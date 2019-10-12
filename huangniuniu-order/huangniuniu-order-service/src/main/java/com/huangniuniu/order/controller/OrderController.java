@@ -17,7 +17,7 @@ public class OrderController {
     private OrderServiceImpl orderService;
 
     /**
-     * 获取全部订单信息
+     * 分页获取全部订单信息
      * @return
      */
     @GetMapping("list")
@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     /**
-     * 根据用户id查询该用户订单详细信息
+     * 分页根据用户id查询该用户订单详细信息
      * @param userid
      * @return
      */
@@ -76,7 +76,7 @@ public class OrderController {
     }
 
     /**
-     * 根据条件查询订单信息（电影、影院名称模糊匹配，购票数量相等）
+     * 分页根据条件查询订单信息（电影、影院名称模糊匹配，购票数量相等）
      * @param orderMessage
      * @return
      */
@@ -92,13 +92,5 @@ public class OrderController {
 
     }
 
-//    @GetMapping("test")
-//    public ResponseEntity<List<Skedule>> test(@RequestBody OrderMessage orderMessage){
-//        List<Skedule> test = orderService.test(orderMessage);
-//        if(CollectionUtils.isEmpty(test)){
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(test);
-//    }
 
 }

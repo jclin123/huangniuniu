@@ -18,7 +18,7 @@ public class MovieController {
     private MovieServiceImpl movieService;
 
     /**
-     * 查询电影信息，已下架三个月不展出
+     * 分页查询电影信息，已下架三个月不展出
      * @return
      */
     @GetMapping("list")
@@ -31,22 +31,6 @@ public class MovieController {
         return ResponseEntity.ok(allMovie);
 
     }
-
-    /**
-     * 分页查询电影信息，已下架三个月不展出
-     * @param page
-     * @param rows
-     * @return
-     */
-//    @GetMapping("getAllMovieByPage")
-//    public ResponseEntity<PageResult<Movie>> getAllMovieByPage(@RequestParam(value = "page",defaultValue = "1") Integer page,
-//                                                               @RequestParam(value = "rows",defaultValue = "10") Integer rows){
-//        PageResult<Movie> allMovieByPage = movieService.getAllMovieByPage(page, rows);
-//        if(CollectionUtils.isEmpty(allMovieByPage.getItems())){
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(allMovieByPage);
-//    }
 
 
     /**
@@ -86,7 +70,7 @@ public class MovieController {
     }
 
     /**
-     * 根据条件查询电影（名称、类型、地区模糊匹配，评分相等）
+     * 分页根据条件查询电影（名称、类型、地区模糊匹配，评分相等）
      * @param movie
      * @return
      */
@@ -102,7 +86,7 @@ public class MovieController {
     }
 
     /**
-     * 根据城市id查询电影
+     * 分页根据城市id查询电影
      * ishot为true为热映
      * ishot为false为即将上映
      * 已下架不展出
@@ -129,8 +113,10 @@ public class MovieController {
      * @return
      */
     @GetMapping("getMovieDetail/{movieid}")
-    public ResponseEntity<MovieDetail> getMovieDetail(@PathVariable("movieid") Long movieid){
-        MovieDetail movieDetail = movieService.getMovieDetail(movieid);
+    public ResponseEntity<MovieDetail> getMovieDetail(@PathVariable("movieid") Long movieid,
+                                                      @RequestParam(value = "page",defaultValue = "1") Integer page,
+                                                      @RequestParam(value = "rows",defaultValue = "10") Integer rows){
+        MovieDetail movieDetail = movieService.getMovieDetail(page,rows,movieid);
         if(movieDetail == null){
                 return ResponseEntity.badRequest().build();
             }
