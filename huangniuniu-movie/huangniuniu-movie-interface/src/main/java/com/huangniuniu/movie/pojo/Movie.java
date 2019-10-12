@@ -2,6 +2,7 @@ package com.huangniuniu.movie.pojo;
 
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 @Data
 @Table(name = "movie")
+@Accessors(chain = true)
 public class Movie {
 
     @Id

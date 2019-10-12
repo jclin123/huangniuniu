@@ -56,3 +56,10 @@ huangniuniu:
       - /api/city/list
       - /api/comment/Commentlist
       - /api/comment/Comments
+      - /api/movie/getMovieDetail
+      - /api/movie/list
+      - /api/movie/getMovieByCondition
+      - /api/movie/getMovieByCityid
+      - /api/movie/listActor
+      - /api/movie/getActorByCondition
+      - /api/movie/getActorByMovieid

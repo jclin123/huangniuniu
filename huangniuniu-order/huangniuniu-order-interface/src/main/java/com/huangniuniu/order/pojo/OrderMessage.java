@@ -16,4 +16,6 @@ public class OrderMessage extends UserOrder{
     private String movieName;
     private Float totalPrice;
 
+
+
 }
