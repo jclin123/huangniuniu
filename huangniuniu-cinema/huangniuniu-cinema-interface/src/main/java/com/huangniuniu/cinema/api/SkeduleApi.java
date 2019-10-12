@@ -1,11 +1,10 @@
 package com.huangniuniu.cinema.api;
 
+import com.huangniuniu.cinema.pojo.Skedule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.huangniuniu.cinema.pojo.Skedule;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,9 +26,16 @@ public interface SkeduleApi {
 //    @GetMapping(value = "skedule/conditionlsit",consumes="application/json")
 //   List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
 
-    @RequestMapping(value="skedule/conditionlsit",method = RequestMethod.POST)
-    List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
+    //@RequestMapping(value="skedule/conditionlsit",method = RequestMethod.POST)
+    //List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
 
+    /**
+     * 不分页条件查询所有排场
+     * @param skedule
+     * @return
+     */
+    @PostMapping("skedule/conditionlist")
+    public List<Skedule> getSkeduleByCondition(Skedule skedule);
 
     /**
      * 根据排场id和购买该排场的电影票数量，修改排场的电影票数量

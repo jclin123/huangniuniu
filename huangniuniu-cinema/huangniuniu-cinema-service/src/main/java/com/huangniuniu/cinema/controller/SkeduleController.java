@@ -120,7 +120,7 @@ public class SkeduleController {
      * @param skedule
      * @return
      */
-    @GetMapping("conditionlist")
+    @PostMapping("conditionlist")
     public ResponseEntity<List<Skedule>> getSkeduleByCondition(Skedule skedule){
         List<Skedule> list = skeduleService.getSkeduleByCondition(skedule);
         if(CollectionUtils.isEmpty(list)){
