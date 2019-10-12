@@ -2,6 +2,7 @@ package com.huangniuniu.comment.controller;
 
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.service.CommentService;
+import com.huangniuniu.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -29,6 +30,19 @@ public class CommentController {
     }
 
     /**
+     * 根据条件查询所有评论并分页
+     * @return
+     */
+    @GetMapping("Commentlisttopage")
+    public ResponseEntity<PageResult<Comment>> getAllComment(@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
+        PageResult<Comment> pageResult = commentService.getAllCommentToPage(pn,pagesize);
+        if(pageResult == null || CollectionUtils.isEmpty(pageResult.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pageResult);
+    }
+
+    /**
      * 根据条件查询评论，返回所有符合评论
      * @param comment
      * @return
@@ -37,6 +51,20 @@ public class CommentController {
     public ResponseEntity<List<Comment>> getAllComment(Comment comment){
         List<Comment> comments = commentService.getCommentByCondition(comment);
         if(CollectionUtils.isEmpty(comments)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(comments);
+    }
+
+    /**
+     * 根据条件查询评论，返回所有符合评论并分页
+     * @param comment
+     * @return
+     */
+    @GetMapping("Commentstopage")
+    public ResponseEntity<PageResult<Comment>> getAllComment(Comment comment,@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
+        PageResult<Comment> comments = commentService.getCommentByConditionToPage(comment,pn,pagesize);
+        if(comment == null || CollectionUtils.isEmpty(comments.getItems())){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(comments);

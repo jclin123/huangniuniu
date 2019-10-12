@@ -2,6 +2,7 @@ package com.huangniuniu.city.controller;
 
 import com.huangniuniu.city.pojo.City;
 import com.huangniuniu.city.service.CityService;
+import com.huangniuniu.common.pojo.PageResult;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,20 @@ public class CityController {
     }
 
     /**
+     * 根据条件获取所有城市并分页
+     * @return
+     */
+    @GetMapping("listtopage")
+    public ResponseEntity<PageResult<City>> getAllCity(@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
+        //List<City> cities = cityService.getAllCity();
+        PageResult<City> cityPageResult = cityService.getAllCityToPage(pn,pagesize);
+        if(cityPageResult==null || CollectionUtils.isEmpty(cityPageResult.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cityPageResult);
+    }
+
+    /**
      * 根据条件查询所有城市，返回符合条件的城市
      * @param city
      * @return
@@ -39,6 +54,20 @@ public class CityController {
     public ResponseEntity<List<City>> getCityBycon(City city){
         List<City> cities = cityService.getCityByPre(city);
         if(CollectionUtils.isEmpty(cities)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cities);
+    }
+
+    /**
+     * 根据条件查询所有城市，返回符合条件的城市
+     * @param city
+     * @return
+     */
+    @GetMapping("conditionlist")
+    public ResponseEntity<PageResult<City>> getCityBycon(City city,@RequestParam(value = "pn",defaultValue = "1")Integer pn,@RequestParam(value = "pagesize",defaultValue = "10")Integer pagesize){
+        PageResult<City> cities = cityService.getCityByPreToPage(city,pn,pagesize);
+        if(cities == null || CollectionUtils.isEmpty(cities.getItems())){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(cities);
