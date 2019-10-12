@@ -51,7 +51,9 @@ public class CinemaServiceImpl implements CinemaService {
     }
 
     @Override
-    public List<Cinema> getCinemaByCondition(Cinema cinema) {
+    public PageResult<Cinema> getCinemaByCondition(Cinema cinema,Integer pageNumber,Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+
         Example example = new Example(Cinema.class);
         Example.Criteria criteria = example.createCriteria();
         if(!StringUtils.isBlank(cinema.getCinemaName())){
@@ -62,7 +64,9 @@ public class CinemaServiceImpl implements CinemaService {
         }
         List<Cinema> cinemas = cinemaMapper.selectByExample(example);
 
-        return cinemas;
+        PageInfo<Cinema> pageInfo = new PageInfo<>(cinemas);
+
+        return new PageResult<>(pageInfo.getTotal(),pageInfo.getList());
     }
 
     @Override
@@ -82,5 +86,14 @@ public class CinemaServiceImpl implements CinemaService {
         List<Cinema> cinemaList = pageInfo.getList();//获得分页记录
 
         return new PageResult<>(total,cinemaList);
+    }
+
+    @Override
+    public PageResult<Cinema> querylistPage(Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+        List<Cinema> list = cinemaMapper.selectAll();
+        PageInfo<Cinema> pageInfo = new PageInfo<>(list);
+
+        return new PageResult<>(pageInfo.getTotal(),pageInfo.getList());
     }
 }

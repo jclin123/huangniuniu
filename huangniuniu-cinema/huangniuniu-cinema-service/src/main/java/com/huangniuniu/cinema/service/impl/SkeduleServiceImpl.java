@@ -1,5 +1,7 @@
 package com.huangniuniu.cinema.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.huangniuniu.cinema.client.MovieClient;
 import com.huangniuniu.cinema.mapper.CinemaMapper;
 import com.huangniuniu.cinema.mapper.CinemaMovieMapper;
@@ -8,6 +10,7 @@ import com.huangniuniu.cinema.pojo.Cinema;
 import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.cinema.service.SkeduleService;
+import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.pojo.Movie;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +72,36 @@ public class SkeduleServiceImpl implements SkeduleService {
     }
 
     @Override
-    public List<Skedule> getSkeduleByCondition(Skedule skedule) {
-        System.out.println(skedule.toString());
+    public PageResult<Skedule> getSkeduleByConditionpage(Skedule skedule, Integer pageNumber, Integer pageSize) {
+
+        PageHelper.startPage(pageNumber,pageSize);
+
         Example example = new Example(Skedule.class);
         Example.Criteria criteria = example.createCriteria();
+        example.orderBy("cinemaName").asc();
+        example.orderBy("movieName").asc();
+        example.orderBy("showDate").desc();
+        if(!StringUtils.isBlank(skedule.getCinemaName())){
+            criteria.andLike("cinemaName","%"+skedule.getCinemaName()+"%");
+        }
+        if(!StringUtils.isBlank(skedule.getMovieName())){
+            criteria.andLike("movieName","%"+skedule.getMovieName()+"%");
+        }
+        List<Skedule> list = skeduleMapper.selectByExample(example);
+        PageInfo<Skedule> pageInfo = new PageInfo<>(list);
+
+        //封装分页
+        return new PageResult<>(pageInfo.getTotal(),pageInfo.getList());
+
+    }
+
+    @Override
+    public List<Skedule> getSkeduleByCondition(Skedule skedule) {
+        Example example = new Example(Skedule.class);
+        Example.Criteria criteria = example.createCriteria();
+        example.orderBy("cinemaName").asc();
+        example.orderBy("movieName").asc();
+        example.orderBy("showDate").desc();
         if(!StringUtils.isBlank(skedule.getCinemaName())){
             criteria.andLike("cinemaName","%"+skedule.getCinemaName()+"%");
         }
@@ -161,6 +190,20 @@ public class SkeduleServiceImpl implements SkeduleService {
             skedule.setTicketsLeft(ticketsLeft - number);
         }
         skeduleMapper.updateByPrimaryKey(skedule);
+    }
+
+    @Override
+    public PageResult<Skedule> getAllSkeduleByPage(Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+        Example example = new Example(Skedule.class);
+        example.orderBy("cinemaName").asc();
+        example.orderBy("movieName").asc();
+        example.orderBy("showDate").desc();
+        List<Skedule> list = this.skeduleMapper.selectByExample(example);
+
+        PageInfo<Skedule> pageInfo = new PageInfo<>(list);
+        //封装分页信息
+        return new PageResult<>(pageInfo.getTotal(),pageInfo.getList());
     }
 
 }

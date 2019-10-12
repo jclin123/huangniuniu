@@ -34,8 +34,8 @@ public class AuthController {
      * @return
      */
     @PostMapping("accountpassword")
-    public ResponseEntity<Void> accountPassword(@RequestParam("account")String account,
-                                         @RequestParam("password")String password,
+    public ResponseEntity<Void> accountPassword(@RequestParam(value = "account")String account,
+                                         @RequestParam(value = "password")String password,
                                          HttpServletRequest request,
                                          HttpServletResponse response){
         String token = authService.accountPassword(account,password);
@@ -105,5 +105,31 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    /**
+     * 退出登录
+     * @param token
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping("exit")
+    public ResponseEntity<Void> exitLogin(@CookieValue("Huangniuniu_TOKEN")String token,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response){
+        try {
+            // 公钥解析jwt，从token中解析token信息
+            UserInfo user = JwtUtils.getInfoFromToken(token, this.jwtProperties.getPublicKey());
+            if(user == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            //删除token
+            CookieUtils.deleteCookie(request,response,this.jwtProperties.getCookieName());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(null);
+    }
 
 }
