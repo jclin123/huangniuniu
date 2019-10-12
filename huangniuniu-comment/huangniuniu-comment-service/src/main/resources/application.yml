@@ -24,5 +24,5 @@ mybatis:
 
 huangniuniu:
   jwt:
-    pubKeyPath: E:\\tmp\\rsa\\rsa.pub # 公钥地址
+    pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
     cookieName: Huangniuniu_TOKEN  #cookie名称

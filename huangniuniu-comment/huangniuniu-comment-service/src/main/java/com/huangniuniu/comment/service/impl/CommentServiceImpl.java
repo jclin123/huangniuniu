@@ -119,4 +119,26 @@ public class CommentServiceImpl implements CommentService {
     public void updateComment(Comment comment) {
         commentMapper.updateByPrimaryKeySelective(comment);
     }
+
+    @Override
+    public PageResult<Comment> getCommentsBymovie(Long movieid, Integer pn, Integer pagesize) {
+        PageHelper.startPage(pn,pagesize);
+        Example example = new Example(Comment.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(movieid!=null){
+            criteria.andEqualTo("movieid",movieid);
+        }
+        List<Comment> comments = commentMapper.selectByExample(example);
+        PageInfo<Comment> pageInfo = new PageInfo(comments,pagesize);
+        PageResult<Comment> pageResult = new PageResult<Comment>();
+        pageResult.setItems(pageInfo.getList());
+        pageResult.setTotal(pageInfo.getTotal());
+        return  pageResult;
+    }
+
+    @Override
+    public Float getMovieScoreByMovieId(Long movieid) {
+        Float score = commentMapper.getMovieScoreByMovieId(movieid);
+        return score;
+    }
 }

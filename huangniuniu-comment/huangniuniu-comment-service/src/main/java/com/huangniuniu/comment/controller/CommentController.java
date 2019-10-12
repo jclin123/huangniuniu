@@ -97,9 +97,41 @@ public class CommentController {
      * @param id
      * @return
      */
-    @DeleteMapping
-    public ResponseEntity<Void> deleteComment(Long id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id){
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 根据movieid查询评论，返回所有符合评论并分页
+     * @param movieid
+     * @param pn
+     * @param pagesize
+     * @return
+     */
+    @GetMapping("bymovieid/{movieid}")
+    public ResponseEntity<PageResult<Comment>>  getCommentsBymovie(@PathVariable("movieid")Long movieid,
+                                                                   @RequestParam(value = "pn",defaultValue = "1")Integer pn,
+                                                                   @RequestParam(value = "pagesize",defaultValue = "10")Integer pagesize){
+        PageResult<Comment> comments = commentService.getCommentsBymovie(movieid,pn,pagesize);
+        if(comments == null || CollectionUtils.isEmpty(comments.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(comments);
+    }
+
+    /**
+     * 根据movieid获得电影平均评分
+     * @param movieid
+     * @return 返回电影平均评分
+     */
+    @GetMapping("moviescore/{movieid}")
+    public ResponseEntity<Float> getMovieScoreByMovieId(@PathVariable("movieid") Long movieid){
+        Float score = commentService.getMovieScoreByMovieId(movieid);
+        if(score == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(score);
     }
 }

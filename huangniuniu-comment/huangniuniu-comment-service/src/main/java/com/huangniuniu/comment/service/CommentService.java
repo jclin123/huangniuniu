@@ -50,4 +50,20 @@ public interface CommentService {
      * @param comment
      */
     void updateComment(Comment comment);
+
+    /**
+     * 根据movieid查询评论，返回所有符合评论并分页
+     * @param movieid
+     * @param pn
+     * @param pagesize
+     * @return
+     */
+    PageResult<Comment> getCommentsBymovie(Long movieid, Integer pn, Integer pagesize);
+
+    /**
+     * 根据movieid获得电影平均评分
+     * @param movieid
+     * @return 返回电影平均评分
+     */
+    Float getMovieScoreByMovieId(Long movieid);
 }
