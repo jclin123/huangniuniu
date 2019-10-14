@@ -88,6 +88,12 @@
             <artifactId>huangniuniu-common</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.huangniuniu</groupId>
+            <artifactId>huangniuniu-auth-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 
