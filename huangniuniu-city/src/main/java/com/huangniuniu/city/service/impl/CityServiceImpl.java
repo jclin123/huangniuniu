@@ -84,4 +84,10 @@ public class CityServiceImpl implements CityService {
     public void updateCity(City city) {
         cityMapper.updateByPrimaryKeySelective(city);
     }
+
+    @Override
+    public City getCityById(Long id) {
+        City city = cityMapper.selectByPrimaryKey(id);
+        return city;
+    }
 }

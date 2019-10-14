@@ -115,15 +115,15 @@ public class CinemaController {
     /**
      * 根据城市id，分显示电影院列表
      * @param pageNumber
-     * @param rows
+     * @param pageSize
      * @param cityid
      * @return
      */
     @GetMapping("pagelist")
     public ResponseEntity<PageResult<Cinema>> getAllCinemasByPage(@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
-                                                                 @RequestParam(value = "rows",defaultValue = "6")Integer rows,
+                                                                 @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
                                                                  @RequestParam("cityid")Long cityid){
-        PageResult<Cinema> list = cinemaService.getAllCinemasByPage(pageNumber, rows, cityid);
+        PageResult<Cinema> list = cinemaService.getAllCinemasByPage(pageNumber, pageSize, cityid);
         if(list == null || CollectionUtils.isEmpty(list.getItems())){
             return ResponseEntity.notFound().build();
         }

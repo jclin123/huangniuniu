@@ -3,7 +3,6 @@ package com.huangniuniu.city.controller;
 import com.huangniuniu.city.pojo.City;
 import com.huangniuniu.city.service.CityService;
 import com.huangniuniu.common.pojo.PageResult;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -50,7 +49,7 @@ public class CityController {
      * @param city
      * @return
      */
-    @GetMapping("conditionlist")
+    @GetMapping("conditionlist2")
     public ResponseEntity<List<City>> getCityBycon(City city){
         List<City> cities = cityService.getCityByPre(city);
         if(CollectionUtils.isEmpty(cities)){
@@ -104,5 +103,19 @@ public class CityController {
     public ResponseEntity<Void> deleteCity(@PathVariable Long id){
         cityService.deleteCity(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 根据城市id查询城市
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<City> getCityById(@PathVariable("id")Long id){
+        City city = cityService.getCityById(id);
+        if(city == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(city);
     }
 }

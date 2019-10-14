@@ -91,7 +91,7 @@ public class AuthController {
             }
 
             //刷新jwt中的有效时间,即重新生成token
-            JwtUtils.generateToken(user,this.jwtProperties.getPrivateKey(),this.jwtProperties.getExpire());
+            token = JwtUtils.generateToken(user, this.jwtProperties.getPrivateKey(), this.jwtProperties.getExpire());
 
             //刷新cookie中的有效时间，即更新生成cookie
             CookieUtils.setCookie(request,response,this.jwtProperties.getCookieName(),token,this.jwtProperties.getExpire()*60);

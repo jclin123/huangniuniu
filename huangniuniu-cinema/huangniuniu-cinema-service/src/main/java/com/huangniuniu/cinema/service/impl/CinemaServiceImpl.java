@@ -23,6 +23,7 @@ public class CinemaServiceImpl implements CinemaService {
     @Override
     @Transactional
     public void insertCinema(Cinema cinema) {
+
         cinemaMapper.insertSelective(cinema);
     }
 

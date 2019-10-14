@@ -49,4 +49,11 @@ public interface CityService {
      * @param city
      */
     void updateCity(City city);
+
+    /**
+     * 根据城市id查询城市
+     * @param id
+     * @return
+     */
+    City getCityById(Long id);
 }

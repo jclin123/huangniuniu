@@ -197,7 +197,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageResult<User> queryAllByPage(Integer pageNumber, Integer pageSize) {
         PageHelper.startPage(pageNumber,pageSize);
-        List<User> users = userMapper.selectAll();
+
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleType",1);//用户信息
+        List<User> users = userMapper.selectByExample(example);
+
         PageInfo<User> pageInfo = new PageInfo<>(users);
         PageResult pageResult = new PageResult(pageInfo.getTotal(), pageInfo.getList());
         return pageResult;
