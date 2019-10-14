@@ -64,4 +64,11 @@ public interface CommentService {
      * @return 返回电影平均评分
      */
     Float getMovieScoreByMovieId(Long movieid);
+
+    /**
+     * 根据commentid获得某一个评论
+     * @param commentid
+     * @return
+     */
+    Comment getCommentByid(Long commentid);
 }

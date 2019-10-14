@@ -130,4 +130,13 @@ public class CommentController {
         }
         return ResponseEntity.ok(score);
     }
+
+    @GetMapping("comment/{commentid}")
+    public  ResponseEntity<Comment> getCommentByCommentid(@PathVariable("commentid") Long commentid){
+        Comment comment = commentService.getCommentByid(commentid);
+        if (comment == null){
+            return ResponseEntity.notFound().build();
+        }
+        return  ResponseEntity.ok(comment);
+    }
 }

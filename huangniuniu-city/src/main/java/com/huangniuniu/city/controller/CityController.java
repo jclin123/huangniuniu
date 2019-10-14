@@ -49,7 +49,7 @@ public class CityController {
      * @param city
      * @return
      */
-    @GetMapping("conditionlist2")
+    @GetMapping("conditionlist")
     public ResponseEntity<List<City>> getCityBycon(City city){
         List<City> cities = cityService.getCityByPre(city);
         if(CollectionUtils.isEmpty(cities)){
@@ -63,7 +63,7 @@ public class CityController {
      * @param city
      * @return
      */
-    @GetMapping("conditionlist")
+    @GetMapping("conditionlisttopage")
     public ResponseEntity<PageResult<City>> getCityBycon(City city,@RequestParam(value = "pn",defaultValue = "1")Integer pn,@RequestParam(value = "pagesize",defaultValue = "10")Integer pagesize){
         PageResult<City> cities = cityService.getCityByPreToPage(city,pn,pagesize);
         if(cities == null || CollectionUtils.isEmpty(cities.getItems())){
