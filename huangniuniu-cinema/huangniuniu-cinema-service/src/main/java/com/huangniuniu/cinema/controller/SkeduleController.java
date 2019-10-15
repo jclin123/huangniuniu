@@ -1,6 +1,5 @@
 package com.huangniuniu.cinema.controller;
 
-import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.cinema.service.SkeduleService;
 import com.huangniuniu.common.pojo.PageResult;
@@ -23,12 +22,11 @@ public class SkeduleController {
     /**
      * 根据电影院和电影信息，添加排场信息
      * @param skedule
-     * @param cinema_movie
      * @return
      */
     @PostMapping
-    public ResponseEntity<Void> addSkedule(Skedule skedule, Cinema_movie cinema_movie){
-        skeduleService.addSkedule(skedule,cinema_movie);
+    public ResponseEntity<Void> addSkedule(Skedule skedule){
+        skeduleService.addSkedule(skedule);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

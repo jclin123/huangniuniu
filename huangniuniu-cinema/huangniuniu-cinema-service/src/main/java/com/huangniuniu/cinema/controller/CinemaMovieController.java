@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("cinemaMovie")
+//@RequestMapping("cinemaMovie")
 public class CinemaMovieController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class CinemaMovieController {
      * @param cinema_movie
      * @return
      */
-    @PostMapping
+    @PostMapping("cinemaMovie")
     public ResponseEntity<Void> chooseCinemaMovie(Cinema_movie cinema_movie){
         cinemaMovieService.chooseCinemaMovie(cinema_movie);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -40,7 +40,7 @@ public class CinemaMovieController {
      * @param cid
      * @return
      */
-    @GetMapping("moviesByCid/{cid}")
+    @GetMapping("cinemaMovie/{cid}")
     public ResponseEntity<Map<String,Object>> getMoviesByCinemaId(@PathVariable("cid")Long cid){
         Map<String,Object> movies = cinemaMovieService.getMoviesByCinemaId(cid);
         if(CollectionUtils.isEmpty(movies)){
@@ -57,7 +57,7 @@ public class CinemaMovieController {
      * @param pageSize
      * @return
      */
-   @GetMapping("moviesPage/{cid}")
+   @GetMapping("cinemaMoviePage/{cid}")
    public ResponseEntity<PageResult<Movie>> getMoviesPageByCinemaId(@PathVariable("cid")Long cid,
                                                                     @RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,
                                                                     @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
@@ -74,7 +74,7 @@ public class CinemaMovieController {
      * @param id
      * @return
      */
-    @DeleteMapping("{id}")
+    @DeleteMapping("cinemaMovie/{id}")
     public ResponseEntity<Void> deleteCinemaMovie(@PathVariable("id")Long id){
         cinemaMovieService.deleteCinemaMovie(id);
         return ResponseEntity.noContent().build();
@@ -101,7 +101,7 @@ public class CinemaMovieController {
      * @param mid
      * @return
      */
-    @GetMapping("citymovie/{cityId}/{mid}")
+    @GetMapping("cinemaMovie/{cityId}/{mid}")
     public ResponseEntity<List<Cinema>> selectCinemaByCityIdAndMovieId(@PathVariable("cityId")Long cityId,
                                                                        @PathVariable("mid")Long mid){
         List<Cinema> cinemaList = cinemaMovieService.selectCinemaByCityIdAndMovieId(cityId, mid);

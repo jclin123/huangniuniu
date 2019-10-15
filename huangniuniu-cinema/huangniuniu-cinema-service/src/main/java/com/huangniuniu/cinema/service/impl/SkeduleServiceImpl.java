@@ -76,12 +76,16 @@ public class SkeduleServiceImpl implements SkeduleService {
         Example.Criteria criteria = example.createCriteria();
         example.orderBy("cinemaName").asc();
         example.orderBy("movieName").asc();
+        example.orderBy("roomName").asc();
         example.orderBy("showDate").desc();
         if(!StringUtils.isBlank(skedule.getCinemaName())){
             criteria.andLike("cinemaName","%"+skedule.getCinemaName()+"%");
         }
         if(!StringUtils.isBlank(skedule.getMovieName())){
             criteria.andLike("movieName","%"+skedule.getMovieName()+"%");
+        }
+        if(!StringUtils.isBlank(skedule.getRoomName())){
+            criteria.andLike("roomName","%"+skedule.getRoomName()+"%");
         }
         List<Skedule> list = skeduleMapper.selectByExample(example);
         PageInfo<Skedule> pageInfo = new PageInfo<>(list);
