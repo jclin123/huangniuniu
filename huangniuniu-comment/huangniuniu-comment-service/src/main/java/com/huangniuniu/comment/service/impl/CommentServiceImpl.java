@@ -148,4 +148,10 @@ public class CommentServiceImpl implements CommentService {
         Float score = commentMapper.getMovieScoreByMovieId(movieid);
         return score;
     }
+
+    @Override
+    public Comment getCommentByid(Long commentid) {
+        Comment comment = commentMapper.selectByPrimaryKey(commentid);
+        return  comment;
+    }
 }
