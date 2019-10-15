@@ -1,6 +1,5 @@
 package com.huangniuniu.movie.pojo;
 
-
 import lombok.Data;
 import lombok.experimental.Accessors;
 

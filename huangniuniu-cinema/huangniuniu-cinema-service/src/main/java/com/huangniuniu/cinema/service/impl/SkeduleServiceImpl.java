@@ -37,14 +37,10 @@ public class SkeduleServiceImpl implements SkeduleService {
 
     @Override
     @Transactional
-    public void addSkedule(Skedule skedule, Cinema_movie cinema_movie) {
+    public void addSkedule(Skedule skedule) {
         //初始化排场信息
         skedule.setId(null);
         skedule.setTicketsSold(0);
-        skedule.setCinemaid(cinema_movie.getCinemaid());
-        skedule.setMovieid(cinema_movie.getMovieid());
-        skedule.setCinemaName(cinema_movie.getCinemaName());
-        skedule.setMovieName(cinema_movie.getMovieName());
         //添加排场信息
         skeduleMapper.insertSelective(skedule);
     }

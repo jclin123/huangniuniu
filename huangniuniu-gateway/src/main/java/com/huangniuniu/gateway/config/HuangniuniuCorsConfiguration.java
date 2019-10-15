@@ -31,7 +31,6 @@ public class HuangniuniuCorsConfiguration {
         // 4）允许的头信息
         configuration.addAllowedHeader("*");//允许携带任何头信息
 
-
         //初始化cors配置源对象，
         UrlBasedCorsConfigurationSource configurationSource=new UrlBasedCorsConfigurationSource();
         //2.添加映射路径，我们拦截一切请求

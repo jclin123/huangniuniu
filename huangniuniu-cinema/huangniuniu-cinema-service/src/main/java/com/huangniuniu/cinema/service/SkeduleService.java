@@ -1,6 +1,5 @@
 package com.huangniuniu.cinema.service;
 
-import com.huangniuniu.cinema.pojo.Cinema_movie;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.common.pojo.PageResult;
 
@@ -22,9 +21,8 @@ public interface SkeduleService {
     /**
      * 根据电影院和电影信息，添加排场信息
      * @param skedule
-     * @param cinema_movie
      */
-    void addSkedule(Skedule skedule, Cinema_movie cinema_movie);
+    void addSkedule(Skedule skedule);
 
     /**
      * 查询所有排场信息
