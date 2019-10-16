@@ -96,6 +96,7 @@ public class CommentServiceImpl implements CommentService {
         if(!StringUtils.isBlank(comment.getNickname())){
             criteria.andLike("nickname","%"+comment.getNickname()+"%");
         }
+        example.orderBy("commentTime").desc();
         List<Comment> comments = commentMapper.selectByExample(example);
         PageInfo<Comment> pageInfo = new PageInfo(comments,pagesize);
         PageResult<Comment> pageResult = new PageResult<Comment>();
@@ -139,6 +140,7 @@ public class CommentServiceImpl implements CommentService {
         if(movieid!=null){
             criteria.andEqualTo("movieid",movieid);
         }
+        example.orderBy("commentTime").desc();
         List<Comment> comments = commentMapper.selectByExample(example);
         return  comments;
     }

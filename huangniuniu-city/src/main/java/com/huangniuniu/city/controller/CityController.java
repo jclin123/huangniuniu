@@ -35,9 +35,9 @@ public class CityController {
      * @return
      */
     @GetMapping("listtopage")
-    public ResponseEntity<PageResult<City>> getAllCity(@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
+    public ResponseEntity<PageResult<City>> getAllCity(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
         //List<City> cities = cityService.getAllCity();
-        PageResult<City> cityPageResult = cityService.getAllCityToPage(pn,pagesize);
+        PageResult<City> cityPageResult = cityService.getAllCityToPage(pageNumber,pageSize);
         if(cityPageResult==null || CollectionUtils.isEmpty(cityPageResult.getItems())){
             return ResponseEntity.notFound().build();
         }
@@ -64,8 +64,8 @@ public class CityController {
      * @return
      */
     @GetMapping("conditionlisttopage")
-    public ResponseEntity<PageResult<City>> getCityBycon(City city,@RequestParam(value = "pn",defaultValue = "1")Integer pn,@RequestParam(value = "pagesize",defaultValue = "10")Integer pagesize){
-        PageResult<City> cities = cityService.getCityByPreToPage(city,pn,pagesize);
+    public ResponseEntity<PageResult<City>> getCityBycon(City city,@RequestParam(value = "pageNumber",defaultValue = "1")Integer pageNumber,@RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageResult<City> cities = cityService.getCityByPreToPage(city,pageNumber,pageSize);
         if(cities == null || CollectionUtils.isEmpty(cities.getItems())){
             return ResponseEntity.notFound().build();
         }

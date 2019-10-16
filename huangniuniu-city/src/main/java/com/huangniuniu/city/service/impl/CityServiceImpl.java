@@ -45,7 +45,7 @@ public class CityServiceImpl implements CityService {
             criteria.andLike("cityName","%"+city.getCityName()+"%");
         }
         if(city.getPreLetter()!=null){
-            criteria.andLike("perLetter","%"+city.getPreLetter()+"%");
+            criteria.andLike("preLetter","%"+city.getPreLetter()+"%");
         }
         List<City> cities = cityMapper.selectByExample(example);
         return cities;
@@ -60,7 +60,7 @@ public class CityServiceImpl implements CityService {
             criteria.andLike("cityName","%"+city.getCityName()+"%");
         }
         if(city.getPreLetter()!=null){
-            criteria.andLike("perLetter","%"+city.getPreLetter()+"%");
+            criteria.andLike("preLetter","%"+city.getPreLetter()+"%");
         }
         List<City> cities = cityMapper.selectByExample(example);
         PageInfo pageInfo = new PageInfo(cities,pagesize);

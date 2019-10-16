@@ -30,12 +30,12 @@ public class CommentController {
     }
 
     /**
-     * 根据条件查询所有评论并分页
+     * 查询所有评论并分页
      * @return
      */
     @GetMapping("Commentlisttopage")
-    public ResponseEntity<PageResult<Comment>> getAllComment(@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
-        PageResult<Comment> pageResult = commentService.getAllCommentToPage(pn,pagesize);
+    public ResponseEntity<PageResult<Comment>> getAllComment(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        PageResult<Comment> pageResult = commentService.getAllCommentToPage(pageNumber,pageSize);
         if(pageResult == null || CollectionUtils.isEmpty(pageResult.getItems())){
             return ResponseEntity.notFound().build();
         }
@@ -62,8 +62,8 @@ public class CommentController {
      * @return
      */
     @GetMapping("Commentstopage")
-    public ResponseEntity<PageResult<Comment>> getAllComment(Comment comment,@RequestParam(value = "pn",defaultValue = "1") Integer pn,@RequestParam(value = "pagesize",defaultValue = "10") Integer pagesize){
-        PageResult<Comment> comments = commentService.getCommentByConditionToPage(comment,pn,pagesize);
+    public ResponseEntity<PageResult<Comment>> getAllComment(Comment comment,@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,@RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        PageResult<Comment> comments = commentService.getCommentByConditionToPage(comment,pageNumber,pageSize);
         if(comment == null || CollectionUtils.isEmpty(comments.getItems())){
             return ResponseEntity.notFound().build();
         }
