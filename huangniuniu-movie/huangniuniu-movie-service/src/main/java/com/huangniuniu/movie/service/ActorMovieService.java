@@ -1,7 +1,6 @@
 package com.huangniuniu.movie.service;
 
 import com.huangniuniu.movie.pojo.ActorMovie;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface ActorMovieService {
     /**
@@ -15,4 +14,18 @@ public interface ActorMovieService {
      * @param actorMovie
      */
     void deleteActorAndMovie(ActorMovie actorMovie);
+
+    /**
+     * 根据演员id和电影id确定中间表的一条记录
+     * @param actorMovie
+     * @return
+     */
+    ActorMovie getActorMovieBymidAndAid(ActorMovie actorMovie);
+
+    /**
+     * 根据中间表主键删除
+     * @param id
+     */
+    void deleteactorMovieById(Long id);
+
 }

@@ -3,9 +3,10 @@ package com.huangniuniu.movie.service.impl;
 import com.huangniuniu.movie.mapper.ActorMovieMapper;
 import com.huangniuniu.movie.pojo.ActorMovie;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -36,8 +37,27 @@ public class ActorMovieServiceImpl {
      */
     @Transactional
     public void deleteActorAndMovie(ActorMovie actorMovie){
-        ActorMovie actorMovie1 = actorMovieMapper.selectOne(actorMovie);
-        actorMovieMapper.deleteByPrimaryKey(actorMovie1.getId());
+        Example example = new Example(ActorMovie.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("actorid",actorMovie.getActorid());
+        criteria.andEqualTo("movieid",actorMovie.getMovieid());
+        List<ActorMovie> actorMovies = actorMovieMapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(actorMovies)){
+            actorMovieMapper.deleteByPrimaryKey(actorMovies.get(0).getId());
+        }
+    }
+
+    public ActorMovie getActorMovieBymidAndAid(ActorMovie actorMovie){
+        Example example = new Example(ActorMovie.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("actorid",actorMovie.getActorid());
+        criteria.andEqualTo("movieid",actorMovie.getMovieid());
+        List<ActorMovie> actorMovies = actorMovieMapper.selectByExample(example);
+        return actorMovies.get(0);
+    }
+
+    public void deleteactorMovieById(Long id){
+        actorMovieMapper.deleteByPrimaryKey(id);
     }
 
 }
