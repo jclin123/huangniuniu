@@ -23,6 +23,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -33,19 +34,35 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private IdWorker idWorker;
 
+    public PageResult<UserOrder> test(Integer page, Integer rows){
+        PageHelper.startPage(page, rows);
+        List<UserOrder> userOrders = orderMapper.selectAll();
+
+        PageInfo<UserOrder> pageInfo=new PageInfo<>(userOrders);
+        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+    }
+
     /**
      *获取全部订单信息
      * @return
      */
     public PageResult<OrderMessage> getAllOrderMessage(Integer page, Integer rows){
-        List<UserOrder> userOrders = orderMapper.selectAll();
+        System.out.println("============"+page);
+        System.out.println("==========="+rows);
+        PageHelper.startPage(page, rows);
         List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
-        if(userOrders!=null){
-            userOrders.forEach(userOrder->{
+        List<UserOrder> userOrders = orderMapper.selectAll();
+        PageInfo pageInfo=new PageInfo<>(userOrders);
+        System.out.println(pageInfo.getTotal());
+        List<UserOrder> list = pageInfo.getList();
+        if(list!=null){
+            list.forEach(userOrder->{
                 OrderMessage orderMessage = new OrderMessage();
                 //根据排场id获取排场信息
+
                 Skedule skeduleBySkeduleid = skeduleClient.getSkeduleBySkeduleid(userOrder.getSkeduleid());
                 if(skeduleBySkeduleid!=null){
+                    System.out.println(skeduleBySkeduleid);
                     orderMessage.setId(userOrder.getId());
                     orderMessage.setNickname(userOrder.getNickname());
                     orderMessage.setOrderNum(userOrder.getOrderNum());
@@ -62,9 +79,10 @@ public class OrderServiceImpl implements OrderService {
 
             });
         }
-        PageHelper.startPage(page, rows);
-        PageInfo<OrderMessage> pageInfo=new PageInfo<>(orderMessageList);
-        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+
+        PageInfo pageInfo1=new PageInfo<>(orderMessageList);
+        return new PageResult<>(pageInfo.getTotal(), pageInfo1.getList());
+
 
     }
 
@@ -98,9 +116,14 @@ public class OrderServiceImpl implements OrderService {
                 }
             });
         }
-        PageHelper.startPage(page, rows);
-        PageInfo<OrderMessage> pageInfo=new PageInfo<>(orderMessageList);
-        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+//        PageHelper.startPage(page, rows);
+//        PageInfo<OrderMessage> pageInfo=new PageInfo<>(orderMessageList);
+//        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+
+        List<OrderMessage> collect = orderMessageList.stream().skip((page - 1) * rows).limit(rows).collect(Collectors.toList());
+        PageInfo<OrderMessage> pageInfo1=new PageInfo<>(collect);
+        pageInfo1.setTotal(orderMessageList.size());
+        return new PageResult<>(pageInfo1.getTotal(), pageInfo1.getList());
 
     }
 
@@ -165,16 +188,21 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     public PageResult<OrderMessage> getOrderMessageByCondition(Integer page, Integer rows,OrderMessage orderMessage){
+        System.out.println("============"+page);
+        System.out.println("==========="+rows);
+        List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
+
         Skedule skedule = new Skedule();
         skedule.setCinemaName(orderMessage.getCinemaName());
         skedule.setMovieName(orderMessage.getMovieName());
         //条件查询排场列表
         List<Skedule> skeduleByCondition = skeduleClient.getSkeduleByCondition(skedule);
-        List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
+
         if(skeduleByCondition!=null){
             skeduleByCondition.forEach(skedule1 -> {
                 //获取每个排场id
                 Long id = skedule1.getId();
+                System.out.println("id="+id);
                 Example example = new Example(UserOrder.class);
                 Example.Criteria criteria = example.createCriteria();
                 criteria.andEqualTo("skeduleid",id);
@@ -182,26 +210,41 @@ public class OrderServiceImpl implements OrderService {
                     criteria.andEqualTo("orderNum",orderMessage.getOrderNum());
                 }
                 List<UserOrder> userOrders = orderMapper.selectByExample(example);
-                userOrders.forEach(userOrder -> {
-                    OrderMessage orderMessage1 = new OrderMessage();
-                    orderMessage1.setId(userOrder.getId());
-                    orderMessage1.setNickname(userOrder.getNickname());
-                    orderMessage1.setOrderNum(userOrder.getOrderNum());
-                    orderMessage1.setOrderTime(userOrder.getOrderTime());
-                    orderMessage1.setUserid(userOrder.getUserid());
-                    orderMessage1.setSkeduleid(userOrder.getSkeduleid());
-                    orderMessage1.setCinemaName(skedule1.getCinemaName());
-                    orderMessage1.setMovieName(skedule1.getMovieName());
-                    orderMessage1.setRoomName(skedule1.getRoomName());
-                    orderMessage1.setShowDate(skedule1.getShowDate());
-                    orderMessage1.setTotalPrice(userOrder.getOrderNum()*skedule1.getPrice());
-                    orderMessageList.add(orderMessage1);
-                });
+                if(userOrders!=null){
+                    userOrders.forEach(userOrder -> {
+                        OrderMessage orderMessage1 = new OrderMessage();
+                        orderMessage1.setId(userOrder.getId());
+                        orderMessage1.setNickname(userOrder.getNickname());
+                        orderMessage1.setOrderNum(userOrder.getOrderNum());
+                        orderMessage1.setOrderTime(userOrder.getOrderTime());
+                        orderMessage1.setUserid(userOrder.getUserid());
+                        orderMessage1.setSkeduleid(userOrder.getSkeduleid());
+                        orderMessage1.setCinemaName(skedule1.getCinemaName());
+                        orderMessage1.setMovieName(skedule1.getMovieName());
+                        orderMessage1.setRoomName(skedule1.getRoomName());
+                        orderMessage1.setShowDate(skedule1.getShowDate());
+                        orderMessage1.setTotalPrice(userOrder.getOrderNum()*skedule1.getPrice());
+                        orderMessageList.add(orderMessage1);
+
+                    });
+                }
             });
         }
-        PageHelper.startPage(page, rows);
-        PageInfo<OrderMessage> pageInfo=new PageInfo<>(orderMessageList);
-        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+//        PageHelper.startPage(page, rows);
+//        PageInfo<OrderMessage> pageInfo1=new PageInfo<>(orderMessageList);
+//
+//        return new PageResult<>(pageInfo1.getTotal(), pageInfo1.getList());
+        List<OrderMessage> collect = orderMessageList.stream().skip((page - 1) * rows).limit(rows).collect(Collectors.toList());
+        PageInfo<OrderMessage> pageInfo1=new PageInfo<>(collect);
+        pageInfo1.setTotal(orderMessageList.size());
+        return new PageResult<>(pageInfo1.getTotal(), pageInfo1.getList());
+
+
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderMapper.deleteByPrimaryKey(id);
 
     }
 }
