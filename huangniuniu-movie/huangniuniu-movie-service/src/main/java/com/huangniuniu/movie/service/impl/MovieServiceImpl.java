@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,89 +36,93 @@ public class MovieServiceImpl implements MovieService {
 
     /**
      * 获取电影列表，超过下架时间三个月不展出
+     *
      * @return
      */
-    public PageResult<Movie> getAllMovie(Integer page, Integer rows){
+    public PageResult<Movie> getAllMovie(Integer page, Integer rows) {
         Example example = new Example(Movie.class);
         Example.Criteria criteria = example.createCriteria();
         Date date = new Date();
         Calendar instance = Calendar.getInstance();
         instance.setTime(date);
-        instance.add(Calendar.MONTH,-3);
+        instance.add(Calendar.MONTH, -3);
         Date time = instance.getTime();
-        criteria.andGreaterThan("soldOutTime",time);
-        List<Movie> movies = movieMapper.selectByExample(example);
+        criteria.andGreaterThan("soldOutTime", time);
         PageHelper.startPage(page, rows);
-        PageInfo<Movie> pageInfo=new PageInfo<>(movies);
+        List<Movie> movies = movieMapper.selectByExample(example);
+        PageInfo<Movie> pageInfo = new PageInfo<>(movies);
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
 
 
-
-
     /**
      * 根据电影id查询电影
+     *
      * @param mid
      * @return
      */
 
-    public Movie getMovieByMovieid(Long mid){
+    public Movie getMovieByMovieid(Long mid) {
         return this.movieMapper.selectByPrimaryKey(mid);
     }
 
 
     /**
      * 新增电影
+     *
      * @param movie
      */
     @Transactional
-    public void insertMovie(Movie movie){
-       this.movieMapper.insertSelective(movie);
+    public void insertMovie(Movie movie) {
+        this.movieMapper.insertSelective(movie);
 
     }
 
     /**
      * 根据id删除电影
+     *
      * @param id
      */
     @Transactional
-    public void deleteMovie(Long id){
+    public void deleteMovie(Long id) {
         this.movieMapper.deleteByPrimaryKey(id);
 
     }
 
     /**
      * 根据电影id修改电影信息
+     *
      * @param movie
      */
     @Transactional
-    public void updateMovie(Movie movie){
+    public void updateMovie(Movie movie) {
         this.movieMapper.updateByPrimaryKeySelective(movie);
     }
 
     /**
      * 根据条件查询电影（名称、类型、地区模糊匹配，评分相等）
+     *
      * @param movie
      * @return
      */
-    public PageResult<Movie> getMovieByCondition(Integer page, Integer rows,Movie movie){
+    public PageResult<Movie> getMovieByCondition(Integer page, Integer rows, Movie movie) {
         Example example = new Example(Movie.class);
         Example.Criteria criteria = example.createCriteria();
-        if(!StringUtils.isBlank(movie.getMovieName())){
-            criteria.andLike("movieName","%"+movie.getMovieName()+"%");
+        if (!StringUtils.isBlank(movie.getMovieName())) {
+            criteria.andLike("movieName", "%" + movie.getMovieName() + "%");
         }
-        if(!StringUtils.isBlank(movie.getMovieType())){
-            criteria.andLike("movieType","%"+movie.getMovieType()+"%");
+        if (!StringUtils.isBlank(movie.getMovieType())) {
+            criteria.andLike("movieType", "%" + movie.getMovieType() + "%");
         }
-        if(!StringUtils.isBlank(movie.getLocation())){
-            criteria.andEqualTo("location",movie.getLocation());
+        if (!StringUtils.isBlank(movie.getLocation())) {
+            criteria.andEqualTo("location", movie.getLocation());
         }
-        if(movie.getScore()!=null){
-            criteria.andEqualTo("score",movie.getScore());
+        if (movie.getScore() != null) {
+            criteria.andEqualTo("score", movie.getScore());
         }
-        List<Movie> movies = movieMapper.selectByExample(example);
         PageHelper.startPage(page, rows);
-        PageInfo<Movie> pageInfo=new PageInfo<>(movies);
+        List<Movie> movies = movieMapper.selectByExample(example);
+        PageInfo<Movie> pageInfo = new PageInfo<>(movies);
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
 
     }
@@ -127,40 +132,43 @@ public class MovieServiceImpl implements MovieService {
      * ishot为true为热映
      * ishot为false为即将上映
      * 已下架不展出
+     *
      * @param cid
      * @param ishot
      * @return
      */
-    public PageResult<Movie> getMovieByCityid(Integer page, Integer rows,Long cid,Boolean ishot){
-            List<Movie> movieByCityids = movieMapper.getMovieByCityid(cid);
-        List<Movie> movies=new ArrayList<Movie>();
-                movieByCityids.forEach(movieByCityid->{
-                    Example example = new Example(Movie.class);
-                    Example.Criteria criteria = example.createCriteria();
-                    Date date = new Date();
-                    if(movieByCityid.getId()!=null){
-                        criteria.andEqualTo("id",movieByCityid.getId());
-                    }
-                    if(ishot){
-                        if(movieByCityid.getSoldOutTime()!=null){
-                            criteria.andNotBetween("releaseTime",date,movieByCityid.getSoldOutTime());
-                            criteria.andGreaterThan("soldOutTime",date);
-                        }
-                    }else {
-                        criteria.andGreaterThan("releaseTime",date);
-                    }
-                    Movie movie = movieMapper.selectOneByExample(example);
-                    if(!org.springframework.util.StringUtils.isEmpty(movie)){
-                        movies.add(movie);
-                    }
-                });
-        PageHelper.startPage(page, rows);
-        PageInfo<Movie> pageInfo=new PageInfo<>(movies);
+    public PageResult<Movie> getMovieByCityid(Integer page, Integer rows, Long cid, Boolean ishot) {
+        List<Movie> movieByCityids = movieMapper.getMovieByCityid(cid);
+        List<Movie> movies = new ArrayList<Movie>();
+        movieByCityids.forEach(movieByCityid -> {
+            Example example = new Example(Movie.class);
+            Example.Criteria criteria = example.createCriteria();
+            Date date = new Date();
+            if (movieByCityid.getId() != null) {
+                criteria.andEqualTo("id", movieByCityid.getId());
+            }
+            if (ishot) {
+                if (movieByCityid.getSoldOutTime() != null) {
+                    criteria.andNotBetween("releaseTime", date, movieByCityid.getSoldOutTime());
+                    criteria.andGreaterThan("soldOutTime", date);
+                }
+            } else {
+                criteria.andGreaterThan("releaseTime", date);
+            }
+            Movie movie = movieMapper.selectOneByExample(example);
+            if (!org.springframework.util.StringUtils.isEmpty(movie)) {
+                movies.add(movie);
+            }
+        });
+        List<Movie> collect = movies.stream().skip((page - 1) * rows).limit(rows).collect(Collectors.toList());
+        PageInfo<Movie> pageInfo=new PageInfo<>(collect);
+        pageInfo.setTotal(movies.size());
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
 
     /**
      * 根据电影id查询封装电影详情数据
+     *
      * @param movieid
      * @return
      */
@@ -171,6 +179,7 @@ public class MovieServiceImpl implements MovieService {
         Comment comment = new Comment();
         comment.setMovieid(movieid);
         //根据电影id获取评论列表
+        PageHelper.startPage(page, rows);
         List<Comment> commentsBymovie = commentClient.getCommentsBymovie(movieid);
         if (movie != null) {
             movieDetail.setId(movie.getId());
@@ -185,11 +194,10 @@ public class MovieServiceImpl implements MovieService {
             movieDetail.setStagePhotos(movie.getStagePhotos());
             movieDetail.setScore(movie.getScore());
         }
-        if(actorByMovieid!=null){
+        if (actorByMovieid != null) {
             movieDetail.setActorList(actorByMovieid);
         }
         if (commentsBymovie != null && !CollectionUtils.isEmpty(commentsBymovie)) {
-            PageHelper.startPage(page, rows);
             PageInfo<Comment> pageInfo = new PageInfo<>(commentsBymovie);
             PageResult<Comment> commentPageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
             movieDetail.setCommentList(commentPageResult);

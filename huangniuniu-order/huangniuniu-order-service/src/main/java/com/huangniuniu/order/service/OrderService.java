@@ -43,4 +43,11 @@ public interface OrderService {
      * @return
      */
     PageResult<OrderMessage> getOrderMessageByCondition(Integer page, Integer rows,OrderMessage orderMessage);
+    /**
+     * 删除订单
+     * @param id
+     */
+    void deleteOrder(Long id);
+
+    public PageResult<UserOrder> test(Integer page, Integer rows);
 }

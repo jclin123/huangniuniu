@@ -101,7 +101,7 @@ public class SkeduleController {
      * @return
      */
     @PostMapping("conditionlist")
-    public ResponseEntity<List<Skedule>> getSkeduleByCondition(Skedule skedule){
+    public ResponseEntity<List<Skedule>> getSkeduleByCondition(@RequestBody Skedule skedule){
         List<Skedule> list = skeduleService.getSkeduleByCondition(skedule);
         if(CollectionUtils.isEmpty(list)){
             return ResponseEntity.notFound().build();

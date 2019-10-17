@@ -25,7 +25,7 @@ public interface SkeduleApi {
      * @return
      */
     @PostMapping("skedule/conditionlist")
-    public List<Skedule> getSkeduleByCondition(Skedule skedule);
+    public List<Skedule> getSkeduleByCondition(@RequestBody Skedule skedule);
 
     /**
      * 根据排场id和购买该排场的电影票数量，修改排场的电影票数量

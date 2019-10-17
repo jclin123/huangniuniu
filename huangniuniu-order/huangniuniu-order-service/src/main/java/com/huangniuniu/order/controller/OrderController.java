@@ -21,9 +21,9 @@ public class OrderController {
      * @return
      */
     @GetMapping("list")
-    public ResponseEntity<PageResult<OrderMessage>> getAllOrderMessage(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                                                                       @RequestParam(value = "rows",defaultValue = "10") Integer rows){
-        PageResult<OrderMessage> allOrderMessage = orderService.getAllOrderMessage(page,rows);
+    public ResponseEntity<PageResult<OrderMessage>> getAllOrderMessage(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,
+                                                                       @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        PageResult<OrderMessage> allOrderMessage = orderService.getAllOrderMessage(pageNumber,pageSize);
         if(allOrderMessage==null||CollectionUtils.isEmpty(allOrderMessage.getItems())){
             return ResponseEntity.notFound().build();
         }
@@ -37,10 +37,10 @@ public class OrderController {
      * @return
      */
     @GetMapping("selectOrderMessageByUserid/{userid}")
-    public ResponseEntity<PageResult<OrderMessage>> selectOrderMessageByUserid(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                                                                               @RequestParam(value = "rows",defaultValue = "10") Integer rows,
+    public ResponseEntity<PageResult<OrderMessage>> selectOrderMessageByUserid(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,
+                                                                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
                                                                                @PathVariable("userid") Long userid){
-        PageResult<OrderMessage> allOrderMessage = orderService.selectOrderMessageByUserid(page,rows,userid);
+        PageResult<OrderMessage> allOrderMessage = orderService.selectOrderMessageByUserid(pageNumber,pageSize,userid);
         if(allOrderMessage==null||CollectionUtils.isEmpty(allOrderMessage.getItems())){
             return ResponseEntity.notFound().build();
         }
@@ -81,15 +81,31 @@ public class OrderController {
      * @return
      */
     @GetMapping("getOrderMessageByCondition")
-    public ResponseEntity<PageResult<OrderMessage>> getOrderMessageByCondition(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                                                                               @RequestParam(value = "rows",defaultValue = "10") Integer rows,
+    public ResponseEntity<PageResult<OrderMessage>> getOrderMessageByCondition(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,
+                                                                               @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
                                                                                OrderMessage orderMessage){
-        PageResult<OrderMessage> orderMessageByCondition = orderService.getOrderMessageByCondition(page,rows,orderMessage);
+        PageResult<OrderMessage> orderMessageByCondition = orderService.getOrderMessageByCondition(pageNumber,pageSize,orderMessage);
         if(orderMessageByCondition==null||CollectionUtils.isEmpty(orderMessageByCondition.getItems())){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(orderMessageByCondition);
 
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long id) {
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("test")
+    public ResponseEntity<PageResult<UserOrder>> getOrderMessageByCondition(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,
+                                                                            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
+        PageResult<UserOrder> test = orderService.test(pageNumber, pageSize);
+        if(test==null||CollectionUtils.isEmpty(test.getItems())){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(test);
     }
 
 

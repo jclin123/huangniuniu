@@ -52,8 +52,8 @@ public class ActorServiceImpl implements ActorService {
      * @return
      */
     public PageResult<Actor> getAllActor(Integer page, Integer rows){
-        List<Actor> actors = actorMapper.selectAll();
         PageHelper.startPage(page, rows);
+        List<Actor> actors = actorMapper.selectAll();
         PageInfo<Actor> pageInfo=new PageInfo<>(actors);
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
@@ -72,8 +72,8 @@ public class ActorServiceImpl implements ActorService {
         if(actor.getId()!=null){
             criteria.andEqualTo("id",actor.getId());
         }
-        List<Actor> actors = actorMapper.selectByExample(example);
         PageHelper.startPage(page, rows);
+        List<Actor> actors = actorMapper.selectByExample(example);
         PageInfo<Actor> pageInfo=new PageInfo<>(actors);
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
@@ -84,8 +84,8 @@ public class ActorServiceImpl implements ActorService {
      * @return
      */
     public PageResult<Actor> getActorByMovieid(Integer page, Integer rows,Long mid){
-        List<Actor> actorByMovieid = actorMapper.getActorByMovieid(mid);
         PageHelper.startPage(page, rows);
+        List<Actor> actorByMovieid = actorMapper.getActorByMovieid(mid);
         PageInfo<Actor> pageInfo=new PageInfo<>(actorByMovieid);
         return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
     }
