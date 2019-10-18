@@ -98,15 +98,5 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("test")
-    public ResponseEntity<PageResult<UserOrder>> getOrderMessageByCondition(@RequestParam(value = "pageNumber",defaultValue = "1") Integer pageNumber,
-                                                                            @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize){
-        PageResult<UserOrder> test = orderService.test(pageNumber, pageSize);
-        if(test==null||CollectionUtils.isEmpty(test.getItems())){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(test);
-    }
-
 
 }

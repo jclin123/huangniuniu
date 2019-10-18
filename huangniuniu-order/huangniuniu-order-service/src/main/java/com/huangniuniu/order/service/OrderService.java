@@ -4,7 +4,6 @@ import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.order.pojo.Notice;
 import com.huangniuniu.order.pojo.OrderMessage;
 import com.huangniuniu.order.pojo.UserOrder;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -49,5 +48,4 @@ public interface OrderService {
      */
     void deleteOrder(Long id);
 
-    public PageResult<UserOrder> test(Integer page, Integer rows);
 }

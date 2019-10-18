@@ -6,7 +6,6 @@ import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.common.utils.IdWorker;
-import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.order.client.SkeduleClient;
 import com.huangniuniu.order.interceptor.LoginInterceptor;
 import com.huangniuniu.order.mapper.OrderMapper;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,21 +32,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private IdWorker idWorker;
 
-    public PageResult<UserOrder> test(Integer page, Integer rows){
-        PageHelper.startPage(page, rows);
-        List<UserOrder> userOrders = orderMapper.selectAll();
-
-        PageInfo<UserOrder> pageInfo=new PageInfo<>(userOrders);
-        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
-    }
-
     /**
      *获取全部订单信息
      * @return
      */
     public PageResult<OrderMessage> getAllOrderMessage(Integer page, Integer rows){
-        System.out.println("============"+page);
-        System.out.println("==========="+rows);
+
         PageHelper.startPage(page, rows);
         List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
         List<UserOrder> userOrders = orderMapper.selectAll();
@@ -188,8 +177,7 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     public PageResult<OrderMessage> getOrderMessageByCondition(Integer page, Integer rows,OrderMessage orderMessage){
-        System.out.println("============"+page);
-        System.out.println("==========="+rows);
+
         List<OrderMessage> orderMessageList=new ArrayList<OrderMessage>();
 
         Skedule skedule = new Skedule();

@@ -62,6 +62,17 @@ public class MovieController {
     }
 
     /**
+     * 修改电影信息
+     * @param movie
+     * @return
+     */
+    @PutMapping("update")
+    public ResponseEntity<Void> updateMovie(Movie movie){
+        this.movieService.updateMovie(movie);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
      * 删除电影
      *
      * @param id
