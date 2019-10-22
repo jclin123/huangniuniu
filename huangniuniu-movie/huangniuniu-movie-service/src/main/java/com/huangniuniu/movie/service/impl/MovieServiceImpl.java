@@ -153,7 +153,7 @@ public class MovieServiceImpl implements MovieService {
                 criteria.andGreaterThan("releaseTime", date);
             }
             Movie movie = movieMapper.selectOneByExample(example);
-            if (!org.springframework.util.StringUtils.isEmpty(movie)) {
+            if (movie != null) {
                 movies.add(movie);
             }
         });

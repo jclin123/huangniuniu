@@ -5,9 +5,7 @@ import com.huangniuniu.movie.service.impl.ActorMovieServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ActorMovieController {
@@ -39,4 +37,30 @@ public class ActorMovieController {
         return ResponseEntity.noContent().build();
 
     }
+
+    /**
+     * 根据aid、mid查询中间表
+     * @param actorMovie
+     * @return
+     */
+    @GetMapping("getactorMovie")
+    public ResponseEntity<ActorMovie> getActorMovieBymidAndAid(ActorMovie actorMovie){
+        ActorMovie movie = this.actorMovieService.getActorMovieBymidAndAid(actorMovie);
+        if(movie == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movie);
+    }
+
+    /**
+     * 删除中间表
+     * @param id
+     * @return
+     */
+    @DeleteMapping("deleteOne/{id}")
+    public ResponseEntity<Void> deleteactorMovieById(@PathVariable("id")Long id){
+        actorMovieService.deleteactorMovieById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
