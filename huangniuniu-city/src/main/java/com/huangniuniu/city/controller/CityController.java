@@ -9,6 +9,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CityController {
@@ -21,9 +22,9 @@ public class CityController {
      * @return
      */
     @GetMapping("list")
-    public ResponseEntity<List<City>> getAllCity(){
+    public ResponseEntity<Map<Character, List<City>>> getAllCity(){
 
-        List<City> cities = cityService.getAllCity();
+        Map<Character, List<City>> cities = cityService.getAllCity();
         if(CollectionUtils.isEmpty(cities)){
             return ResponseEntity.notFound().build();
         }

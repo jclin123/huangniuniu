@@ -3,15 +3,16 @@ package com.huangniuniu.city.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huangniuniu.city.mapper.CityMapper;
+import com.huangniuniu.city.pojo.City;
+import com.huangniuniu.city.service.CityService;
 import com.huangniuniu.common.pojo.PageResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.huangniuniu.city.pojo.City;
-import com.huangniuniu.city.service.CityService;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CityServiceImpl implements CityService {
@@ -20,10 +21,14 @@ public class CityServiceImpl implements CityService {
     public CityMapper cityMapper;
 
     @Override
-    public List<City> getAllCity() {
+    public Map<Character, List<City>> getAllCity() {
 
-        List<City> citys = cityMapper.selectAll();
-        return citys;
+        Example example = new Example(City.class);
+        //example.orderBy("preLetter").asc();
+        List<City> citys = cityMapper.selectByExample(example);
+        Map<Character, List<City>> map = citys.stream().collect(Collectors.groupingBy(City::getPreLetter));
+        TreeMap<Character, List<City>> treeMap = map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, TreeMap::new));
+        return  treeMap;
     }
 
     @Override

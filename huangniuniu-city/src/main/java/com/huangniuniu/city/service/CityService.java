@@ -4,6 +4,7 @@ import com.huangniuniu.city.pojo.City;
 import com.huangniuniu.common.pojo.PageResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CityService {
 
@@ -11,7 +12,7 @@ public interface CityService {
      * 查询所有城市
      * @return
      */
-    List<City> getAllCity();
+    Map<Character, List<City>> getAllCity();
 
     /**
      * 根据条件查询所有城市并分页
