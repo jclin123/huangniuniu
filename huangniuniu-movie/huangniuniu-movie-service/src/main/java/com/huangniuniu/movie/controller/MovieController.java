@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class MovieController {
@@ -128,6 +129,22 @@ public class MovieController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(movieDetail);
+    }
+
+
+    /**
+     * 根据城市id查询热映中评分前五的电影
+     * @param cid
+     * @return
+     */
+    @GetMapping("getHotMovie")
+    public ResponseEntity<List<Movie>> getHotMovie(@RequestParam("cid") Long cid){
+        List<Movie> hotMovie = movieService.getHotMovie(cid);
+        if (hotMovie == null || CollectionUtils.isEmpty(hotMovie)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(hotMovie);
+
     }
 
 
