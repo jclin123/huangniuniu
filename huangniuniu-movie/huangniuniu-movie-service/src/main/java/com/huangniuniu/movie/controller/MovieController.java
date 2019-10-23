@@ -115,7 +115,7 @@ public class MovieController {
     public ResponseEntity<PageResult<Movie>> getMovieByCityid(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                               @RequestParam(value = "rows", defaultValue = "10") Integer rows,
                                                               @RequestParam("cid") Long cid,
-                                                              @RequestParam("ishot") Boolean ishot) {
+                                                              @RequestParam(value = "ishot",defaultValue = "true") Boolean ishot) {
         PageResult<Movie> movieByCityid = movieService.getMovieByCityid(page, rows, cid, ishot);
         if (movieByCityid == null || CollectionUtils.isEmpty(movieByCityid.getItems())) {
             return ResponseEntity.notFound().build();
