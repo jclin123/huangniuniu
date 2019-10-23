@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -205,5 +202,48 @@ public class MovieServiceImpl implements MovieService {
         return movieDetail;
 
     }
+
+    /**
+     * 根据城市id查询热映中评分前五的电影
+     * @param cid
+     * @return
+     */
+    public List<Movie> getHotMovie(Long cid){
+        List<Movie> movieByCityids = movieMapper.getMovieByCityid(cid);
+        List<Movie> movies = new ArrayList<Movie>();
+        movieByCityids.forEach(movieByCityid -> {
+            Example example = new Example(Movie.class);
+            Example.Criteria criteria = example.createCriteria();
+            Date date = new Date();
+            if (movieByCityid.getId() != null) {
+                criteria.andEqualTo("id", movieByCityid.getId());
+            }
+            if (movieByCityid.getSoldOutTime() != null) {
+                criteria.andNotBetween("releaseTime", date, movieByCityid.getSoldOutTime());
+                criteria.andGreaterThan("soldOutTime", date);
+            }
+
+            Movie movie = movieMapper.selectOneByExample(example);
+            if (!org.springframework.util.StringUtils.isEmpty(movie)) {
+                movies.add(movie);
+            }
+        });
+        Collections.sort(movies, new Comparator<Movie>() {
+            @Override
+            public int compare(Movie o1, Movie o2) {
+                float v = o2.getScore() - o1.getScore();
+                if(v>0){
+                    return 1;
+                }else if(v<0){
+                    return -1;
+                }
+                return 0;
+            }
+        });
+        List<Movie> movies1 = movies.subList(0, 5);
+        return movies1;
+    }
+
+
 
 }
