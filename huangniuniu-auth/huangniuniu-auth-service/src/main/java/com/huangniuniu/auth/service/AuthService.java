@@ -1,5 +1,7 @@
 package com.huangniuniu.auth.service;
 
+import java.util.Map;
+
 public interface AuthService {
 
     /**
@@ -8,7 +10,7 @@ public interface AuthService {
      * @param password
      * @return
      */
-    String accountPassword(String account, String password);
+    Map<String, String> accountPassword(String account, String password);
 
     /**
      * 根据手机号和验证码授权登录
@@ -16,5 +18,5 @@ public interface AuthService {
      * @param code
      * @return
      */
-    String PhoneAndCode(String phonenumber, String code);
+    Map<String, String> PhoneAndCode(String phonenumber, String code);
 }

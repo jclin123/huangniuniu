@@ -111,5 +111,19 @@ public class CinemaMovieController {
         return ResponseEntity.ok(cinemaList);
     }
 
+    /**
+     * 根据电影院id查询该电影院的电影
+     * @param mid
+     * @return
+     */
+    @GetMapping("movieList/{mid}")
+    public ResponseEntity<List<Movie>> selectMovieListByCinemaId(@PathVariable("mid")Long mid){
+        List<Movie> list = this.cinemaMovieService.selectMovieListByCinemaId(mid);
+        if(CollectionUtils.isEmpty(list)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
 
 }

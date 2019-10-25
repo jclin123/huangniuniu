@@ -126,6 +126,29 @@ public class MovieController {
     }
 
     /**
+     * 不分页查询所有热门电影
+     * 分页根据城市id查询电影
+     * ishot为true为热映
+     * ishot为false为即将上映
+     * 已下架不展出
+     *
+     * @param cid
+     * @param ishot
+     * @return
+     */
+    @GetMapping("getMovieByCityidNoPage")
+    public ResponseEntity<List<Movie>> getMovieByCityidNoPage(@RequestParam("cid") Long cid,
+                                                        @RequestParam(value = "ishot",defaultValue = "true") Boolean ishot) {
+        List<Movie> movieByCityid = movieService.getMovieByCityidNoPage(cid, ishot);
+        if (CollectionUtils.isEmpty(movieByCityid)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movieByCityid);
+
+    }
+
+
+    /**
      * 根据电影id查询封装电影详情数据
      *
      * @param movieid
@@ -157,6 +180,8 @@ public class MovieController {
         return ResponseEntity.ok(hotMovie);
 
     }
+
+
 
 
 }

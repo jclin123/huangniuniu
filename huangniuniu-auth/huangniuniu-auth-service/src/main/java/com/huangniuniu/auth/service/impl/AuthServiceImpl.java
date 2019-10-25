@@ -9,6 +9,9 @@ import com.huangniuniu.user.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -18,23 +21,22 @@ public class AuthServiceImpl implements AuthService {
     private JwtProperties jwtProperties;
 
     @Override
-    public String accountPassword(String account, String password) {
+    public Map<String, String> accountPassword(String account, String password) {
 
         //远程调用微服务，根据用户名和密码查询
         User user = userClient.loginByAccountAndPsw(account, password);
-        String userToToken = getUserToToken(user);
-        return userToToken;
+        return getUserToToken(user);
+
     }
 
     @Override
-    public String PhoneAndCode(String phonenumber, String code) {
+    public Map<String, String> PhoneAndCode(String phonenumber, String code) {
 
         User user = userClient.loginByPhoneAndCode(phonenumber, code);
-        String userToToken = getUserToToken(user);
-        return userToToken;
+        return getUserToToken(user);
     }
 
-    private String getUserToToken(User user){
+    private Map<String, String> getUserToToken(User user){
         if(user == null){
             return null;
         }
@@ -42,8 +44,13 @@ public class AuthServiceImpl implements AuthService {
         try {
             UserInfo userInfo = new UserInfo();
             userInfo.setId(user.getId());
+            userInfo.setRoleType(user.getRoleType());
             userInfo.setUsername(user.getNickname());
-            return JwtUtils.generateToken(userInfo,jwtProperties.getPrivateKey(),jwtProperties.getExpire());
+            Map<String,String> map = new HashMap<>();
+            String token = JwtUtils.generateToken(userInfo, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
+            map.put("type",user.getRoleType().toString());
+            map.put("token",token);
+            return map;
         }catch (Exception e){
             e.printStackTrace();
         }

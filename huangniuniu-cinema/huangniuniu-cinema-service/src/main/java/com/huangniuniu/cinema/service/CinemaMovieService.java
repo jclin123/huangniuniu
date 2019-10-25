@@ -58,4 +58,10 @@ public interface CinemaMovieService {
      */
     PageResult<Movie> getMoviesPageByCinemaId(Long cid, Integer pageNumber, Integer pageSize);
 
+    /**
+     * 根据电影院id查询该电影院的电影
+     * @param mid
+     * @return
+     */
+    List<Movie> selectMovieListByCinemaId(Long mid);
 }

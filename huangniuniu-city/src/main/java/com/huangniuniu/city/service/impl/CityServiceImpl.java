@@ -95,4 +95,13 @@ public class CityServiceImpl implements CityService {
         City city = cityMapper.selectByPrimaryKey(id);
         return city;
     }
+
+    @Override
+    public City getCityByCityName(String cityName) {
+        Example example = new Example(City.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andLike("cityName",cityName);
+        List<City> cities = this.cityMapper.selectByExample(example);
+        return cities.get(0);
+    }
 }

@@ -71,4 +71,13 @@ public interface CommentService {
      * @return
      */
     Comment getCommentByid(Long commentid);
+
+    /**
+     * 根据电影id分页查询评论
+     * @param mid
+     * @param pageSize
+     * @param pageNumber
+     * @return
+     */
+    PageResult<Comment> getcommentsPageBymid(Long mid, Integer pageNumber, Integer pageSize);
 }

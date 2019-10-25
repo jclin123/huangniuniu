@@ -119,4 +119,18 @@ public class CityController {
         }
         return ResponseEntity.ok(city);
     }
+
+    /**
+     * 根据城市名称查询该城市信息
+     * @param cityName
+     * @return
+     */
+    @GetMapping("cityName")
+    public ResponseEntity<City> getCityByCityName(@RequestParam("cityName")String cityName){
+        City city = this.cityService.getCityByCityName(cityName);
+        if(city == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(city);
+    }
 }

@@ -57,4 +57,11 @@ public interface CityService {
      * @return
      */
     City getCityById(Long id);
+
+    /**
+     * 根据城市名称查询该城市信息
+     * @param cityName
+     * @return
+     */
+    City getCityByCityName(String cityName);
 }

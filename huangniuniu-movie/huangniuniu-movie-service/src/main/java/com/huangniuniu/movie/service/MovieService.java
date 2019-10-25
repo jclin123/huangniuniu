@@ -4,6 +4,8 @@ import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.movie.pojo.MovieDetail;
 
+import java.util.List;
+
 public interface MovieService {
     /**
      * 获取电影列表，超过下架时间三个月不展出
@@ -56,4 +58,11 @@ public interface MovieService {
      */
     public void updateMovie(Movie movie);
 
+    /**
+     * 不分页查询热门电影
+     * @param cid
+     * @param ishot
+     * @return
+     */
+    List<Movie> getMovieByCityidNoPage(Long cid, Boolean ishot);
 }

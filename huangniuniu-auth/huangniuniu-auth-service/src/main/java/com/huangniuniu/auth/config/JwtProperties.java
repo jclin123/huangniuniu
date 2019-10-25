@@ -25,7 +25,9 @@ public class JwtProperties {
 
     private PrivateKey privateKey; // 私钥
 
-    private String cookieName;
+    private String cookieName; //管理页面cookie
+
+    private String cookieUserName;//用户页面的cookie
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 
@@ -104,5 +106,13 @@ public class JwtProperties {
 
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
+    }
+
+    public String getCookieUserName() {
+        return cookieUserName;
+    }
+
+    public void setCookieUserName(String cookieUserName) {
+        this.cookieUserName = cookieUserName;
     }
 }

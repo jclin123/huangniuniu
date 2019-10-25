@@ -23,6 +23,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, PrivateKey privateKey, int expireMinutes) throws Exception {
         return Jwts.builder()
                 .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())
+                .claim(JwtConstans.JWT_KEY_USER_TYPE, userInfo.getRoleType())
                 .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())
                 .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.RS256, privateKey)
@@ -41,6 +42,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, byte[] privateKey, int expireMinutes) throws Exception {
         return Jwts.builder()
                 .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())
+                .claim(JwtConstans.JWT_KEY_USER_TYPE, userInfo.getRoleType())
                 .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())
                 .setExpiration(DateTime.now().plusMinutes(expireMinutes).toDate())
                 .signWith(SignatureAlgorithm.RS256, RsaUtils.getPrivateKey(privateKey))
@@ -85,6 +87,7 @@ public class JwtUtils {
         Claims body = claimsJws.getBody();
         return new UserInfo(
                 ObjectUtils.toLong(body.get(JwtConstans.JWT_KEY_ID)),
+                ObjectUtils.toInt(body.get(JwtConstans.JWT_KEY_USER_TYPE)),
                 ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME))
         );
     }
@@ -102,6 +105,7 @@ public class JwtUtils {
         Claims body = claimsJws.getBody();
         return new UserInfo(
                 ObjectUtils.toLong(body.get(JwtConstans.JWT_KEY_ID)),
+                ObjectUtils.toInt(body.get(JwtConstans.JWT_KEY_USER_TYPE)),
                 ObjectUtils.toString(body.get(JwtConstans.JWT_KEY_USER_NAME))
         );
     }
