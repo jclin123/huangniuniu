@@ -6,6 +6,7 @@ import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.common.utils.IdWorker;
+import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.order.client.SkeduleClient;
 import com.huangniuniu.order.interceptor.LoginInterceptor;
 import com.huangniuniu.order.mapper.OrderMapper;
@@ -18,9 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,9 +105,13 @@ public class OrderServiceImpl implements OrderService {
                 }
             });
         }
-//        PageHelper.startPage(page, rows);
-//        PageInfo<OrderMessage> pageInfo=new PageInfo<>(orderMessageList);
-//        return new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        Collections.sort(orderMessageList, new Comparator<OrderMessage>() {
+            @Override
+            public int compare(OrderMessage o1, OrderMessage o2) {
+                int i = o2.getOrderTime().compareTo(o1.getOrderTime());
+                return i;
+            }
+        });
 
         List<OrderMessage> collect = orderMessageList.stream().skip((page - 1) * rows).limit(rows).collect(Collectors.toList());
         PageInfo<OrderMessage> pageInfo1=new PageInfo<>(collect);
