@@ -170,6 +170,8 @@ public class SkeduleServiceImpl implements SkeduleService {
             criteria.andGreaterThan("showDate",date);//超过当前时间的排场
             criteria.andEqualTo("cinemaid",cinemaid);
             criteria.andEqualTo("movieid",movieid);
+            //按排场时间从小到大排场
+            example.orderBy("showDate").asc();
             List<Skedule> skeduleList = skeduleMapper.selectByExample(example);
             return skeduleList;
 

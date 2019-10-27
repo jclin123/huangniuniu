@@ -19,7 +19,7 @@ zuul:
     order-service: /order/** #路由到订单微服务
     comment-service: /comment/** #路由到评论微服务
   add-host-header: true  # 携带头信息，把域名带上
-  sensitive-headers: # 覆盖默认敏感头信息
+  sensitive-headers:  # 覆盖默认敏感头信息
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
 
 hystrix:
@@ -38,7 +38,8 @@ ribbon:
 huangniuniu:
   jwt:
     pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
-    cookieName: Huangniuniu_TOKEN  #cookie名称
+    cookieName: Huangniuniu_TOKEN  #cookie名称 ，管理页面
+    cookieUserName: Huangniuniu_USERTOKEN  #cookie名称，用户页面
   filter:  #配置白名单，不做拦截,添加评论、购买即下订单的时、以及后台管理操作需要拦截
     allowPaths:
       - /api/auth

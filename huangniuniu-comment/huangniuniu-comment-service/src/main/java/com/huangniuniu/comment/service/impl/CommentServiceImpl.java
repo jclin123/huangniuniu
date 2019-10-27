@@ -142,6 +142,7 @@ public class CommentServiceImpl implements CommentService {
         }
         example.orderBy("commentTime").desc();
         List<Comment> comments = commentMapper.selectByExample(example);
+
         return  comments;
     }
 
@@ -155,5 +156,22 @@ public class CommentServiceImpl implements CommentService {
     public Comment getCommentByid(Long commentid) {
         Comment comment = commentMapper.selectByPrimaryKey(commentid);
         return  comment;
+    }
+
+    @Override
+    public PageResult<Comment> getcommentsPageBymid(Long mid, Integer pageNumber, Integer pageSize) {
+        PageHelper.startPage(pageNumber,pageSize);
+        Example example = new Example(Comment.class);
+        Example.Criteria criteria = example.createCriteria();
+        if(mid!=null){
+            criteria.andEqualTo("movieid",mid);
+        }
+        example.orderBy("commentTime").desc();
+        List<Comment> comments = commentMapper.selectByExample(example);
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments);
+        PageResult<Comment> pageResult = new PageResult<Comment>();
+        pageResult.setItems(pageInfo.getList());
+        pageResult.setTotal(pageInfo.getTotal());
+        return  pageResult;
     }
 }

@@ -7,13 +7,16 @@ public class UserInfo {
 
     private Long id;
 
+    private Integer roleType;
+
     private String username;
 
     public UserInfo() {
     }
 
-    public UserInfo(Long id, String username) {
+    public UserInfo(Long id, Integer roleType, String username) {
         this.id = id;
+        this.roleType = roleType;
         this.username = username;
     }
 
@@ -31,5 +34,13 @@ public class UserInfo {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
     }
 }

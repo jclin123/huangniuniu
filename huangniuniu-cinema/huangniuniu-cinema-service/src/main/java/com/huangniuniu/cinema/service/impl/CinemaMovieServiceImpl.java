@@ -109,4 +109,9 @@ public class CinemaMovieServiceImpl implements CinemaMovieService {
         return new PageResult(pageInfo.getTotal(),pageInfo.getList());
     }
 
+    @Override
+    public List<Movie> selectMovieListByCinemaId(Long mid) {
+        return this.cinemaMovieMapper.selectMovieListByCinemaId(mid);
+    }
+
 }

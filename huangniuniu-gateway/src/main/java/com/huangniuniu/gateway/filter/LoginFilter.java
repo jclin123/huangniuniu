@@ -69,19 +69,22 @@ public class LoginFilter extends ZuulFilter {
         HttpServletRequest request = currentContext.getRequest();
 
         //获取cookie值，即token
-        String token = CookieUtils.getCookieValue(request, this.jwtProperties.getCookieName());
+        String token1 = CookieUtils.getCookieValue(request, this.jwtProperties.getCookieName());
 
-       /* if(StringUtils.isBlank(token)){
+        String token2 = CookieUtils.getCookieValue(request, this.jwtProperties.getCookieUserName());
+
+        if(StringUtils.isBlank(token1) && StringUtils.isBlank(token2)){
             //不转发请求
             currentContext.setSendZuulResponse(false);
             //响应状态码
             currentContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        }*/
+        }
 
        //校验
         try {
-            // 校验通过什么都不做，即放行
-            UserInfo userInfo = JwtUtils.getInfoFromToken(token, this.jwtProperties.getPublicKey());
+            // 校验通过什么都不做，即放行,这里有问题，先放着
+            UserInfo userInfo1 = JwtUtils.getInfoFromToken(token1, this.jwtProperties.getPublicKey());
+            UserInfo userInfo2 = JwtUtils.getInfoFromToken(token2, this.jwtProperties.getPublicKey());
         } catch (Exception e) {
             e.printStackTrace();
             //不转发请求

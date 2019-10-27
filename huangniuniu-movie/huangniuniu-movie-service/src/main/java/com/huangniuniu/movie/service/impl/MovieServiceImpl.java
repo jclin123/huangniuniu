@@ -97,6 +97,39 @@ public class MovieServiceImpl implements MovieService {
     }
 
     /**
+     * 不分页查询所有热门电影
+     * @param cid
+     * @param ishot
+     * @return
+     */
+    @Override
+    public List<Movie> getMovieByCityidNoPage(Long cid, Boolean ishot) {
+        List<Movie> movieByCityids = movieMapper.getMovieByCityid(cid);
+        List<Movie> movies = new ArrayList<Movie>();
+        movieByCityids.forEach(movieByCityid -> {
+            Example example = new Example(Movie.class);
+            Example.Criteria criteria = example.createCriteria();
+            Date date = new Date();
+            if (movieByCityid.getId() != null) {
+                criteria.andEqualTo("id", movieByCityid.getId());
+            }
+            if (ishot) {
+                if (movieByCityid.getSoldOutTime() != null) {
+                    criteria.andNotBetween("releaseTime", date, movieByCityid.getSoldOutTime());
+                    criteria.andGreaterThan("soldOutTime", date);
+                }
+            } else {
+                criteria.andGreaterThan("releaseTime", date);
+            }
+            Movie movie = movieMapper.selectOneByExample(example);
+            if (movie != null) {
+                movies.add(movie);
+            }
+        });
+        return movies;
+    }
+
+    /**
      * 根据条件查询电影（名称、类型、地区模糊匹配，评分相等）
      *
      * @param movie
@@ -190,6 +223,7 @@ public class MovieServiceImpl implements MovieService {
             movieDetail.setPrevideo(movie.getPrevideo());
             movieDetail.setStagePhotos(movie.getStagePhotos());
             movieDetail.setScore(movie.getScore());
+            movieDetail.setRunningTime(movie.getRunningTime());
         }
         if (actorByMovieid != null) {
             movieDetail.setActorList(actorByMovieid);
@@ -240,8 +274,12 @@ public class MovieServiceImpl implements MovieService {
                 return 0;
             }
         });
-        List<Movie> movies1 = movies.subList(0, 5);
-        return movies1;
+        if(movies.size() >= 5) {
+            List<Movie> movies1 = movies.subList(0, 5);
+            return movies1;
+        }else {
+            return movies;
+        }
     }
 
 
