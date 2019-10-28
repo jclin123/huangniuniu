@@ -109,7 +109,10 @@ public class UserServiceImpl implements UserService {
         user.setAccount(account);
         User user1 = userMapper.selectOne(user);
         //判断该账号的用户是否存在
-        if(user1 == null || user1.getRoleType() != 0){
+        /*if(user1 == null || user1.getRoleType() != 0){
+            return null;
+        }*/
+        if(user1 == null){
             return null;
         }
 
@@ -132,14 +135,14 @@ public class UserServiceImpl implements UserService {
         user.setAccount(phonenum);
         User user1 = userMapper.selectOne(user);
         //判断用户是否存在
-        if(user1 == null || user1.getRoleType() != 0){
+        if(user1 == null){
             return null;
         }
         //存在，判断验证码的合法性
         String redis_code = redisTemplate.opsForValue().get(KEY_PREFIX + phonenum);
         if(StringUtils.equals(code,redis_code)){
             //删除redis记录
-            redisTemplate.delete(KEY_PREFIX+phonenum);
+            //redisTemplate.delete(KEY_PREFIX+phonenum);
             return user1;
         }
         return null;
