@@ -4,6 +4,7 @@ import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.service.CommentService;
 import com.huangniuniu.common.pojo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -156,5 +157,22 @@ public class CommentController {
             return ResponseEntity.notFound().build();
         }
         return  ResponseEntity.ok(comment);
+    }
+
+    /**
+     * 根据排场id和用户id查询该评论是不是存在，存在则不能再评论
+     * @param userid
+     * @param skeduleid
+     * @return
+     */
+    @GetMapping("getcomment/{userid}/{skeduleid}")
+    public ResponseEntity<Boolean> getCommentByUseridAndSkeduleid(@PathVariable("userid")Long userid,
+                                                                  @PathVariable("skeduleid")Long skeduleid){
+        Boolean bool = this.commentService.getCommentByUseridAndSkeduleid(userid,skeduleid);
+        if(!bool){
+            return ResponseEntity.badRequest().build();//参数问题，响应400
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(bool);
+
     }
 }

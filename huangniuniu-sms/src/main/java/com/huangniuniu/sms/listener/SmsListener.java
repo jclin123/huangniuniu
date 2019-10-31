@@ -31,6 +31,7 @@ public class SmsListener {
         }
         String phone = msg.get("phone");
         String code = msg.get("code");
+        System.out.println("手机号："+phone);
         if(StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(code)){
             this.smsUtil.sendSsms(phone,code);
         }

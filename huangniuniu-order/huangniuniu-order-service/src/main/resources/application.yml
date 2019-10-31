@@ -7,6 +7,11 @@ spring:
     url: jdbc:mysql://rm-wz9nd973maez52c107o.mysql.rds.aliyuncs.com:3306/huangniuniu
     username: jc
     password: jc123456AA
+  rabbitmq:
+    host: 47.102.97.195
+    username: huangniuniu
+    password: huangniuniu
+    virtual-host: /huangniuniu
 
 eureka:
   client:
@@ -26,7 +31,8 @@ huangniuniu:
     datacenterId: 1
   jwt:
     pubKeyPath: D:\\tmp\\rsa\\rsa.pub # 公钥地址
-    cookieName: Huangniuniu_TOKEN  #cookie名称
+    cookieName: Huangniuniu_TOKEN  #cookie名称，管理页面
+    cookieUserName: Huangniuniu_USERTOKEN  #cookie名称，用户页面
 hystrix:
   command:
     default:

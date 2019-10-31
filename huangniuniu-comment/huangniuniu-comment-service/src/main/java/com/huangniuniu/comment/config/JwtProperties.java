@@ -17,6 +17,8 @@ public class JwtProperties {
 
     private String cookieName;
 
+    private String cookieUserName;//用户页面的cookie
+
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 
     /**
@@ -58,5 +60,13 @@ public class JwtProperties {
 
     public void setCookieName(String cookieName) {
         this.cookieName = cookieName;
+    }
+
+    public String getCookieUserName() {
+        return cookieUserName;
+    }
+
+    public void setCookieUserName(String cookieUserName) {
+        this.cookieUserName = cookieUserName;
     }
 }

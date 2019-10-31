@@ -24,7 +24,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //获取cookie中的token
-        String token = CookieUtils.getCookieValue(request, properties.getCookieName());
+        String token = CookieUtils.getCookieValue(request, properties.getCookieUserName());
 
         //解析token，获取用户信息
         UserInfo userInfo = JwtUtils.getInfoFromToken(token, properties.getPublicKey());
