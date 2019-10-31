@@ -30,6 +30,7 @@ public class Movie {
     private String prevideo;
     private Float score;
     private Date soldOutTime;
+    private String poster;
 
     public Long getId() {
         return id;
@@ -129,5 +130,13 @@ public class Movie {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     public void setSoldOutTime(Date soldOutTime) {
         this.soldOutTime = soldOutTime;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

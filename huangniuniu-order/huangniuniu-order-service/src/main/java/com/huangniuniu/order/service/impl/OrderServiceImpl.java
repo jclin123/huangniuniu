@@ -2,24 +2,21 @@ package com.huangniuniu.order.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.cinema.pojo.Skedule;
 import com.huangniuniu.common.pojo.PageResult;
 import com.huangniuniu.common.utils.IdWorker;
-import com.huangniuniu.movie.pojo.Movie;
 import com.huangniuniu.order.client.SkeduleClient;
-import com.huangniuniu.order.interceptor.LoginInterceptor;
 import com.huangniuniu.order.mapper.OrderMapper;
 import com.huangniuniu.order.pojo.Notice;
 import com.huangniuniu.order.pojo.OrderMessage;
 import com.huangniuniu.order.pojo.UserOrder;
 import com.huangniuniu.order.service.OrderService;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
     private SkeduleClient skeduleClient;
     @Autowired
     private IdWorker idWorker;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     /**
      *获取全部订单信息
@@ -91,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
                 if(skeduleBySkeduleid!=null){
                     OrderMessage orderMessage = new OrderMessage();
                     orderMessage.setId(userOrder.getId());
+                    orderMessage.setSeat(userOrder.getSeat());
                     orderMessage.setNickname(userOrder.getNickname());
                     orderMessage.setOrderNum(userOrder.getOrderNum());
                     orderMessage.setOrderTime(userOrder.getOrderTime());
@@ -141,11 +141,39 @@ public class OrderServiceImpl implements OrderService {
     public void insertUserOrderMessage(UserOrder userOrder){
         long orderId = idWorker.nextId();
         userOrder.setId(orderId);
-        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        /*UserInfo userInfo = LoginInterceptor.getLoginUser();
         userOrder.setUserid(userInfo.getId());
-        userOrder.setNickname(userInfo.getUsername());
+        userOrder.setNickname(userInfo.getUsername());*/
         userOrder.setOrderTime(new Date());
-        orderMapper.insertSelective(userOrder);
+        //获取排场的数量和购买数量，得到座位号
+        Skedule skedule = this.skeduleClient.getSkeduleBySkeduleid(userOrder.getSkeduleid());
+        Integer ticketsSold = skedule.getTicketsSold();//卖出去的票数
+        Integer ticketsLeft = skedule.getTicketsLeft();//剩余的票数
+
+        if(ticketsLeft >= userOrder.getOrderNum()){
+            //修改排场的剩余和卖出的电影票数量
+            Map<String,Object> msg = new HashMap<>();
+            msg.put("skeduleid",skedule.getId());
+            msg.put("number",userOrder.getOrderNum());
+            amqpTemplate.convertAndSend("huangniuniu.skedule.exchange","skedule.number",msg);
+
+
+            //剩余的票数>购买票数，添加座位
+            String seat = "";
+            for(int i = 1;i <= userOrder.getOrderNum();i++){
+                seat = seat + (++ticketsSold);
+                if(userOrder.getOrderNum() > i){
+                    seat += ",";
+                }
+            }
+            userOrder.setSeat(seat);
+
+            orderMapper.insertSelective(userOrder);
+        }else{
+            //不可以购买
+
+        }
+
     }
 
     /**

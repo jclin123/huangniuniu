@@ -2,9 +2,7 @@ package com.huangniuniu.comment.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.huangniuniu.auth.pojo.UserInfo;
 import com.huangniuniu.comment.client.MovieClient;
-import com.huangniuniu.comment.interceptor.LoginInterceptor;
 import com.huangniuniu.comment.mapper.CommentMapper;
 import com.huangniuniu.comment.pojo.Comment;
 import com.huangniuniu.comment.service.CommentService;
@@ -13,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
@@ -107,10 +106,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void insertComment(Comment comment) {
-        comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
-        UserInfo userInfo = LoginInterceptor.getuserInfo();
-        comment.setUserid(userInfo.getId());
-        comment.setNickname(userInfo.getUsername());
+        //comment.setMovieName(movieClient.getMovieByMovieid(comment.getMovieid()).getMovieName());
+        //UserInfo userInfo = LoginInterceptor.getuserInfo();
+        //comment.setUserid(userInfo.getId());
+        //comment.setNickname(userInfo.getUsername());
         Date date = new Date();
         comment.setCommentTime(date);
         commentMapper.insertSelective(comment);
@@ -173,5 +172,19 @@ public class CommentServiceImpl implements CommentService {
         pageResult.setItems(pageInfo.getList());
         pageResult.setTotal(pageInfo.getTotal());
         return  pageResult;
+    }
+
+    @Override
+    public Boolean getCommentByUseridAndSkeduleid(Long userid, Long skeduleid) {
+        Example example = new Example(Comment.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        criteria.andEqualTo("userid",userid);
+        criteria.andEqualTo("skeduleid",skeduleid);
+        List<Comment> comments = this.commentMapper.selectByExample(example);
+        if(!CollectionUtils.isEmpty(comments)){
+            return false;
+        }
+        return true;
     }
 }

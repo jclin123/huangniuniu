@@ -80,4 +80,12 @@ public interface CommentService {
      * @return
      */
     PageResult<Comment> getcommentsPageBymid(Long mid, Integer pageNumber, Integer pageSize);
+
+    /**
+     * 根据排场id和用户id查询该评论是不是存在，存在则不能再评论
+     * @param userid
+     * @param skeduleid
+     * @return
+     */
+    Boolean getCommentByUseridAndSkeduleid(Long userid, Long skeduleid);
 }

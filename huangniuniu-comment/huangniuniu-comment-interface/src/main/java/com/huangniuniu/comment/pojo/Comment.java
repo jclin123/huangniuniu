@@ -22,4 +22,5 @@ public class Comment {
     private Long movieid;
     private String movieName;
     private String nickname;
+    private Long skeduleid;
 }

@@ -15,10 +15,11 @@ public class HuangniuniuCorsConfiguration {
         //1、初始化cor配置对象
         CorsConfiguration configuration=new CorsConfiguration();
         //1) 允许的域,不要写*，否则cookie就无法使用了
+        //configuration.addAllowedOrigin("http://www.item.huangniuniu.com");
+        //configuration.addAllowedOrigin("http://www.hniuniu.com");
         configuration.addAllowedOrigin("http://manage.huangniuniu.com");
-        configuration.addAllowedOrigin("http://app.huangniuniu.com");
         configuration.addAllowedOrigin("http://www.huangniuniu.com");
-        configuration.addAllowedOrigin("null");
+        //configuration.addAllowedOrigin("null");
         //configuration.addAllowedOrigin("*");
         //2) 是否发送Cookie信息
         configuration.setAllowCredentials(true);
@@ -30,6 +31,7 @@ public class HuangniuniuCorsConfiguration {
         configuration.addAllowedMethod("POST");
         configuration.addAllowedMethod("DELETE");
         configuration.addAllowedMethod("PATCH");*/
+
         configuration.addAllowedMethod("*");//代表所有请求方法
         // 4）允许的头信息
         configuration.addAllowedHeader("*");//允许携带任何头信息
@@ -42,4 +44,5 @@ public class HuangniuniuCorsConfiguration {
         //3、返回corsFilter实例
         return new CorsFilter(configurationSource);
     }
+
 }
